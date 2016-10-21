@@ -1,0 +1,16 @@
+[
+{
+  "modid": "xtech",
+  "name": "XTech",
+  "description": "A tech mod, with lasers!",
+  "version": "0.0.1",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["kaikue"],
+  "credits": "McJty for his modding tutorials",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
