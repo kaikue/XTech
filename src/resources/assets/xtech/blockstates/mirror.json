@@ -1,13 +1,15 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "xtech:mirror"
-  },
-  "variants": {
-    "facing=north": { "model": "xtech:mirror", "y": 180 },
-    "facing=south": { "model": "xtech:mirror" },
-    "facing=west":  { "model": "xtech:mirror", "y": 90 },
-    "facing=east":  { "model": "xtech:mirror", "y": 270 },
-    "inventory": [{ "model": "xtech:mirror", "y": 90 }]
-  }
+    "forge_marker": 1,
+    "defaults": {
+        "model": "xtech:mirror"
+    },
+    "variants": {
+        "facing=up":  { "model": "xtech:mirror", "z": 90 },
+        "facing=down":  { "model": "xtech:mirror", "z": 270 },
+        "facing=north": { "model": "xtech:mirror", "y": 180 },
+        "facing=south": { "model": "xtech:mirror" },
+        "facing=west":  { "model": "xtech:mirror", "y": 90 },
+        "facing=east":  { "model": "xtech:mirror", "y": 270 },
+        "inventory": [{ "model": "xtech:mirror", "y": 90 }]
+    }
 }

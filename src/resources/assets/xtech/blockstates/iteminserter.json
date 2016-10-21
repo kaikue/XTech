@@ -1,10 +1,15 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "xtech:iteminserter"
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}]
-  }
+    "forge_marker": 1,
+    "defaults": {
+        "model": "xtech:iteminserter"
+    },
+    "variants": {
+        "facing=up": { "model": "xtech:iteminserter", "z": 90 },
+        "facing=down": { "model": "xtech:iteminserter", "z": 270 },
+        "facing=east": { "model": "xtech:iteminserter" },
+        "facing=south": { "model": "xtech:iteminserter", "y": 90 },
+        "facing=west": { "model": "xtech:iteminserter", "y": 180 },
+        "facing=north": { "model": "xtech:iteminserter", "y": 270 },
+        "inventory": [{ "model": "xtech:iteminserter", "y": 180 }]
+    }
 }
