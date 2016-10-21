@@ -27,5 +27,17 @@ public class ModRecipes {
 					'G', "blockGlass"
 				)
 			);
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ModBlocks.blockItemInserter),
+					"II ",
+					"RSL",
+					"II ",
+					'I', "ingotIron",
+					'R', "dustRedstone",
+					'L', ModItems.itemLaserCore,
+					'S', "itemSilicon"
+				)
+			);
 	}
 }

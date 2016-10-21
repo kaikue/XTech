@@ -4,7 +4,10 @@
     "model": "xtech:mirror"
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{}]
+    "facing=north": { "model": "xtech:mirror", "y": 180 },
+    "facing=south": { "model": "xtech:mirror" },
+    "facing=west":  { "model": "xtech:mirror", "y": 90 },
+    "facing=east":  { "model": "xtech:mirror", "y": 270 },
+    "inventory": [{ "model": "xtech:mirror", "y": 90 }]
   }
 }
