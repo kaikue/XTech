@@ -3,7 +3,8 @@
     "textures": {
         "0": "xtech:blocks/mirror_parts",
         "1": "xtech:blocks/mirror_front",
-        "2": "xtech:blocks/mirror_back"
+        "2": "xtech:blocks/mirror_back",
+  	    "particle": "xtech:blocks/mirror_back"
     },
     "elements": [
         {
