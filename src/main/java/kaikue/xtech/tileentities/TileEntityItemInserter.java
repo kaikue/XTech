@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import kaikue.xtech.Config;
 import kaikue.xtech.ModBlocks;
-import kaikue.xtech.XTech;
 import kaikue.xtech.blocks.DirectionalBaseBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
@@ -131,6 +130,7 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 				
 				if(itemstackDest == null || itemstackDest.stackSize == 0) {
 					source.markDirty();
+					break;
 				}
 				
 				source.setInventorySlotContents(i, itemstackSrc);
