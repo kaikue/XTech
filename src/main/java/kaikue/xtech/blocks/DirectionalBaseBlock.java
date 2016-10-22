@@ -13,9 +13,19 @@ public class DirectionalBaseBlock extends BaseBlock {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
     
+    public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab)
+    {
+        super(name, description, material, addToCreativeTab);
+    }
+    
     public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab)
     {
         super(name, material, addToCreativeTab);
+    }
+    
+    public DirectionalBaseBlock(String name, String description, Material material)
+    {
+        super(name, description, material);
     }
     
     public DirectionalBaseBlock(String name, Material material)
