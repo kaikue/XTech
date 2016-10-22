@@ -60,6 +60,6 @@ public class BlockItemInserter extends DirectionalBaseBlock implements ITileEnti
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityItemInserter();
+		return new TileEntityItemInserter(getStateFromMeta(meta));
 	}
 }
