@@ -18,9 +18,11 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	private IBlockState facing;
 	private BlockPos inventoryPos;
 	private int invCheckCooldown;
+	private int insertCooldown;
 	
 	public TileEntityItemInserter() {
 		resetInvCheckCooldown();
+		resetInsertCooldown();
 	}
 	
 	public TileEntityItemInserter(IBlockState facing) {
@@ -35,12 +37,29 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
         }
 		
 		boolean foundInventory = true;
-        //every few ticks, insert into inventory (if it is there)
-        //if it's not there, flag = false
+		
+		if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
+			insertCooldown--;
+			if(insertCooldown < 1) {
+				//insert into inventory (if it is there)
+		        //if it's not there, flag = false
+				IBlockState blockState = getWorld().getBlockState(inventoryPos);
+				if(blockState.getBlock().hasTileEntity(blockState)) {
+		            TileEntity tileEntity = getWorld().getTileEntity(inventoryPos);
+		            if (tileEntity != null && tileEntity instanceof IInventory)
+		            {
+						//insert
+		            }
+		            else {
+		            	foundInventory = false;
+		            }
+				}
+			}
+		}
         invCheckCooldown--;
         if(invCheckCooldown < 1 || !foundInventory) {
         	inventoryPos = findClosestInventory();
-        	XTech.logger.info("New inv: " + inventoryPos);
+        	//XTech.logger.info("New inv: " + inventoryPos);
         	resetInvCheckCooldown();
         }
     }
@@ -91,6 +110,10 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	
 	private void resetInvCheckCooldown() {
 		invCheckCooldown = 20;
+	}
+	
+	private void resetInsertCooldown() {
+		insertCooldown = 10;
 	}
 	
 	@Override
