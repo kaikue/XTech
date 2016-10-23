@@ -43,14 +43,13 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 
 		if(teii.inventoryPos == null) return;
 		
-		
 		GlStateManager.pushAttrib();
 
 		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-		GlStateManager.enableDepth();
-		GlStateManager.depthMask(false);
+		//GlStateManager.enableDepth();
+		//GlStateManager.depthMask(false);
 		GlStateManager.pushMatrix();
 		switch (color) {
 		case BLUE: this.bindTexture(blueLaser); break;
@@ -77,6 +76,7 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 		drawBeam(prev, receiver, player, 0.2f);
 
 		tessellator.draw();
+		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 		GlStateManager.popAttrib();
 	}
