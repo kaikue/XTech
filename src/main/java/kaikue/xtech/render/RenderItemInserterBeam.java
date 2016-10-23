@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntityItemInserter> {
@@ -39,12 +40,12 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 	 */
 	@Override
 	public void renderTileEntityAt(TileEntityItemInserter teii, double x, double y, double z, float partialTick, int destroyStage) {
+
+		if(teii.inventoryPos == null || !teii.justTransferred) return;
+
 		Tessellator tessellator = Tessellator.getInstance();
 
-		if(teii.inventoryPos == null) return;
-		
 		GlStateManager.pushAttrib();
-
 		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -68,11 +69,11 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 		Vec3d player = new Vec3d((float) pX, (float) pY + p.getEyeHeight(), (float) pZ);
 
 		Vec3d prev = emitter;
-		/*for(BlockPos mirrorPos : teii.mirrors) {
+		for(BlockPos mirrorPos : teii.mirrors) {
 			Vec3d mirrorVec = new Vec3d(mirrorPos.getX() + 0.5f, mirrorPos.getY() + 0.5f, mirrorPos.getZ() + 0.5f);
 			drawBeam(prev, mirrorVec, player, 0.2f);
 			prev = mirrorVec;
-		}*/
+		}
 		drawBeam(prev, receiver, player, 0.2f);
 
 		tessellator.draw();

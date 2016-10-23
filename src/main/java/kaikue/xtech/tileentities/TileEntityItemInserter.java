@@ -1,5 +1,7 @@
 package kaikue.xtech.tileentities;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nullable;
 
 import kaikue.xtech.Config;
@@ -20,9 +22,11 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
 public class TileEntityItemInserter extends TileEntity implements ITickable {
 
+	public BlockPos inventoryPos;
+	public boolean justTransferred;
+	public ArrayList<BlockPos> mirrors = new ArrayList<BlockPos>();
 	private IBlockState facing;
 	private EnumFacing insertFacing;
-	public BlockPos inventoryPos;
 	private int invCheckCooldown;
 	private int insertCooldown;
 
@@ -48,7 +52,11 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 				if(inventoryPos != null) {
 					IInventory inventory = inventoryAt(inventoryPos);
 					if(inventory != null) {
-						transferItem(inventory, insertFacing);
+						boolean transferred = transferItem(inventory, insertFacing);
+						if(transferred != justTransferred) {
+							justTransferred = transferred;
+							updateInWorld();
+						}
 					}
 					else {
 						foundInventory = false;
@@ -72,6 +80,7 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	}
 
 	private void findClosestInventory() {
+		mirrors = new ArrayList<BlockPos>();
 		EnumFacing direction = getStateFacing(facing);
 		MutableBlockPos checkPos = new MutableBlockPos(pos);
 		for(int i = 0; i < Config.beamDistance; i++) {
@@ -92,6 +101,7 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 
 			if(blockState.getBlock() == ModBlocks.blockMirror) {
 				direction = turnDirection(direction, getStateFacing(blockState));
+				mirrors.add(checkPos.toImmutable());
 				if(direction == null) break; //hit the back of a mirror
 			}
 
@@ -123,9 +133,9 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 		return null;
 	}
 
-	private void transferItem(IInventory dest, EnumFacing facing) {
+	private boolean transferItem(IInventory dest, EnumFacing facing) {
 		IInventory source = inventoryAt(pos.offset(getStateFacing(this.facing).getOpposite()));
-		if(source == null) return;
+		if(source == null) return false;
 		
 		for(int i = 0; i < source.getSizeInventory(); i++) {
 			if(source.getStackInSlot(i) != null) {
@@ -134,12 +144,13 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 				
 				if(itemstackDest == null || itemstackDest.stackSize == 0) {
 					source.markDirty();
-					break;
+					return true;
 				}
 				
 				source.setInventorySlotContents(i, itemstackSrc);
 			}
 		}
+		return false;
 	}
 
 	private EnumFacing getStateFacing(IBlockState blockState) {
@@ -166,6 +177,22 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setInteger("facing", ModBlocks.blockItemInserter.getMetaFromState(this.facing));
+		compound.setBoolean("justTransferred", justTransferred);
+		int[] mirrorsX = new int[mirrors.size()];
+		for(int i = 0; i < mirrors.size(); i++) {
+			mirrorsX[i] = mirrors.get(i).getX();
+		}
+		compound.setIntArray("mirrorsX", mirrorsX);
+		int[] mirrorsY = new int[mirrors.size()];
+		for(int i = 0; i < mirrors.size(); i++) {
+			mirrorsY[i] = mirrors.get(i).getY();
+		}
+		compound.setIntArray("mirrorsY", mirrorsY);
+		int[] mirrorsZ = new int[mirrors.size()];
+		for(int i = 0; i < mirrors.size(); i++) {
+			mirrorsZ[i] = mirrors.get(i).getZ();
+		}
+		compound.setIntArray("mirrorsZ", mirrorsZ);
 		if(inventoryPos != null) compound.setLong("inventoryPos", inventoryPos.toLong());
 		return compound;
 	}
@@ -174,6 +201,14 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.facing = ModBlocks.blockItemInserter.getStateFromMeta(compound.getInteger("facing"));
+		this.justTransferred = compound.getBoolean("justTransferred");
+		this.mirrors = new ArrayList<BlockPos>();
+		int[] mirrorsX = compound.getIntArray("mirrorsX");
+		int[] mirrorsY = compound.getIntArray("mirrorsY");
+		int[] mirrorsZ = compound.getIntArray("mirrorsZ");
+		for(int i = 0; i < mirrorsX.length; i++) {
+			this.mirrors.add(new BlockPos(mirrorsX[i], mirrorsY[i], mirrorsZ[i]));
+		}
 		this.inventoryPos = compound.hasKey("inventoryPos") ? BlockPos.fromLong(compound.getLong("inventoryPos")) : null;
 	}
 	
