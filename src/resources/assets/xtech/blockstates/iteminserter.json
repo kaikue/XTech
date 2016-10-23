@@ -4,12 +4,12 @@
         "model": "xtech:iteminserter"
     },
     "variants": {
-        "facing=up": { "model": "xtech:iteminserter", "z": 90 },
-        "facing=down": { "model": "xtech:iteminserter", "z": 270 },
-        "facing=east": { "model": "xtech:iteminserter" },
-        "facing=south": { "model": "xtech:iteminserter", "y": 90 },
-        "facing=west": { "model": "xtech:iteminserter", "y": 180 },
-        "facing=north": { "model": "xtech:iteminserter", "y": 270 },
-        "inventory": [{ "model": "xtech:iteminserter", "y": 180 }]
+        "facing=up": { "model": "xtech:iteminserter" },
+        "facing=down": { "model": "xtech:iteminserter", "x": 180 },
+        "facing=east": { "model": "xtech:iteminserter", "y": 90, "x": 90 },
+        "facing=south": { "model": "xtech:iteminserter", "y": 180, "x": 90 },
+        "facing=west": { "model": "xtech:iteminserter", "y": 270, "x": 90 },
+        "facing=north": { "model": "xtech:iteminserter", "x": 90 },
+        "inventory": [{ "model": "xtech:iteminserter" }]
     }
 }

@@ -12,32 +12,32 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = XTech.MODID, name = XTech.MODNAME, version = XTech.VERSION, dependencies = "required-after:Forge@[12.18.1.2095,)")
 public class XTech {
-	
+
 	public static final String MODID = "xtech";
-    public static final String MODNAME = "XTech";
-    public static final String VERSION = "0.0.1";
-    
-    public static final Logger logger = LogManager.getLogger(XTech.MODID);
-    
-    @SidedProxy(clientSide = "kaikue.xtech.proxy.ClientProxy", serverSide = "kaikue.xtech.proxy.ServerProxy")
-    public static CommonProxy proxy;
-    
-    @Mod.Instance
-    public static XTech instance = new XTech();
-    
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e) {
-        proxy.preInit(e);
-    }
+	public static final String MODNAME = "XTech";
+	public static final String VERSION = "0.0.1";
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent e) {
-        proxy.init(e);
-    }
+	public static final Logger logger = LogManager.getLogger(XTech.MODID);
 
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent e) {
-        proxy.postInit(e);
-    }
+	@SidedProxy(clientSide = "kaikue.xtech.proxy.ClientProxy", serverSide = "kaikue.xtech.proxy.ServerProxy")
+	public static CommonProxy proxy;
+
+	@Mod.Instance
+	public static XTech instance = new XTech();
+
+	@Mod.EventHandler
+	public void preInit(FMLPreInitializationEvent e) {
+		proxy.preInit(e);
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent e) {
+		proxy.init(e);
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent e) {
+		proxy.postInit(e);
+	}
 
 }

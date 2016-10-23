@@ -13,27 +13,27 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxy {
-	
+
 	public static Configuration config;
-	
-    public void preInit(FMLPreInitializationEvent e) {
-    	File directory = e.getModConfigurationDirectory();
-        config = new Configuration(new File(directory.getPath(), "xtech.cfg"));
-        Config.readConfig();
 
-        ModBlocks.init();
-        ModItems.init();
-        ModRecipes.init();
-        ModMisc.init();
-    }
-    
-    public void init(FMLInitializationEvent e) {
-    	
-    }
+	public void preInit(FMLPreInitializationEvent e) {
+		File directory = e.getModConfigurationDirectory();
+		config = new Configuration(new File(directory.getPath(), "xtech.cfg"));
+		Config.readConfig();
 
-    public void postInit(FMLPostInitializationEvent e) {
-    	if (config.hasChanged()) {
-            config.save();
-        }
-    }
+		ModBlocks.init();
+		ModItems.init();
+		ModRecipes.init();
+		ModMisc.init();
+	}
+
+	public void init(FMLInitializationEvent e) {
+
+	}
+
+	public void postInit(FMLPostInitializationEvent e) {
+		if (config.hasChanged()) {
+			config.save();
+		}
+	}
 }

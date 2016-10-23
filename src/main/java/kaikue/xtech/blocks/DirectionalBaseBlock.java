@@ -10,46 +10,46 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 
 public class DirectionalBaseBlock extends BaseBlock {
-	
+
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    
-    public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab)
-    {
-        super(name, description, material, addToCreativeTab);
-    }
-    
-    public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab)
-    {
-        super(name, material, addToCreativeTab);
-    }
-    
-    public DirectionalBaseBlock(String name, String description, Material material)
-    {
-        super(name, description, material);
-    }
-    
-    public DirectionalBaseBlock(String name, Material material)
-    {
-        super(name, material);
-    }
-    
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
-    }
-    
-    public IBlockState withRotation(IBlockState state, Rotation rot)
-    {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
-    }
-    
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-    {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
-    }
-    
-    public BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
+
+	public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab)
+	{
+		super(name, description, material, addToCreativeTab);
+	}
+
+	public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab)
+	{
+		super(name, material, addToCreativeTab);
+	}
+
+	public DirectionalBaseBlock(String name, String description, Material material)
+	{
+		super(name, description, material);
+	}
+
+	public DirectionalBaseBlock(String name, Material material)
+	{
+		super(name, material);
+	}
+
+	public int getMetaFromState(IBlockState state)
+	{
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	}
+
+	public IBlockState withRotation(IBlockState state, Rotation rot)
+	{
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	}
+
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	{
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	}
+
+	public BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, new IProperty[] {FACING});
+	}
 }

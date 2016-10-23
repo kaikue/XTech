@@ -8,36 +8,36 @@ public class ModRecipes {
 	public static void init() {
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ModItems.itemLaserCore), 
-					"III",
-					"RSG",
-					"III",
-					'I', "ingotIron",
-					'R', "dustRedstone",
-					'S', "itemSilicon",
-					'G', "blockGlass"
+				"III",
+				"RSG",
+				"III",
+				'I', "ingotIron",
+				'R', "dustRedstone",
+				'S', "itemSilicon",
+				'G', "blockGlass"
 				)
-			);
+				);
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ModBlocks.blockMirror),
-					"  G",
-					"SIG",
-					"  G",
-					'S', "itemSilicon",
-					'I', "ingotIron",
-					'G', "blockGlass"
+				"  G",
+				"SIG",
+				"  G",
+				'S', "itemSilicon",
+				'I', "ingotIron",
+				'G', "blockGlass"
 				)
-			);
-		
+				);
+
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ModBlocks.blockItemInserter),
-					"II ",
-					"RSL",
-					"II ",
-					'I', "ingotIron",
-					'R', "dustRedstone",
-					'L', ModItems.itemLaserCore,
-					'S', "itemSilicon"
+				"II ",
+				"RSL",
+				"II ",
+				'I', "ingotIron",
+				'R', "dustRedstone",
+				'L', ModItems.itemLaserCore,
+				'S', "itemSilicon"
 				)
-			);
+				);
 	}
 }
