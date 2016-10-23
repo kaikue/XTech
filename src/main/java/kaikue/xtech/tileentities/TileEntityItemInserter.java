@@ -46,28 +46,30 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 
 		boolean foundInventory = true;
 
-		if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
-			insertCooldown--;
-			if(insertCooldown < 1) {
-				if(inventoryPos != null) {
-					IInventory inventory = inventoryAt(inventoryPos);
-					if(inventory != null) {
-						boolean transferred = transferItem(inventory, insertFacing);
-						if(transferred != justTransferred) {
-							justTransferred = transferred;
-							updateInWorld();
-						}
-					}
-					else {
-						foundInventory = false;
+		insertCooldown--;
+		if(insertCooldown < 1) {
+			boolean transferred = false;
+			if(inventoryPos != null) {
+				IInventory inventory = inventoryAt(inventoryPos);
+				if(inventory != null) {
+					if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
+						transferred = transferItem(inventory, insertFacing);
 					}
 				}
 				else {
 					foundInventory = false;
 				}
-				resetInsertCooldown();
+			}
+			else {
+				foundInventory = false;
+			}
+			resetInsertCooldown();
+			if(transferred != justTransferred) {
+				justTransferred = transferred;
+				updateInWorld();
 			}
 		}
+
 		invCheckCooldown--;
 		if(invCheckCooldown < 1 || !foundInventory) {
 			BlockPos oldInventoryPos = inventoryPos;
