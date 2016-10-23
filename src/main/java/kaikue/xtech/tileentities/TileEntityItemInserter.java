@@ -10,6 +10,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -20,7 +22,7 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 
 	private IBlockState facing;
 	private EnumFacing insertFacing;
-	private BlockPos inventoryPos;
+	public BlockPos inventoryPos;
 	private int invCheckCooldown;
 	private int insertCooldown;
 
@@ -36,9 +38,7 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) {
-			return;
-		}
+		if(worldObj.isRemote) return;
 
 		boolean foundInventory = true;
 
@@ -62,7 +62,11 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 		}
 		invCheckCooldown--;
 		if(invCheckCooldown < 1 || !foundInventory) {
+			BlockPos oldInventoryPos = inventoryPos;
 			findClosestInventory();
+			if((inventoryPos == null && oldInventoryPos != null) || (inventoryPos != null && !inventoryPos.equals(oldInventoryPos))) {
+				updateInWorld();
+			}
 			resetInvCheckCooldown();
 		}
 	}
@@ -149,11 +153,20 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	private void resetInsertCooldown() {
 		insertCooldown = 10;
 	}
+	
+	private void updateInWorld() {
+		if (worldObj != null) {
+			IBlockState state = worldObj.getBlockState(getPos());
+			worldObj.notifyBlockUpdate(getPos(), state, state, 3);
+		}
+		markDirty();
+	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setInteger("facing", ModBlocks.blockItemInserter.getMetaFromState(this.facing));
+		if(inventoryPos != null) compound.setLong("inventoryPos", inventoryPos.toLong());
 		return compound;
 	}
 
@@ -161,6 +174,24 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.facing = ModBlocks.blockItemInserter.getStateFromMeta(compound.getInteger("facing"));
+		this.inventoryPos = compound.hasKey("inventoryPos") ? BlockPos.fromLong(compound.getLong("inventoryPos")) : null;
+	}
+	
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(new NBTTagCompound());
+	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound tag = new NBTTagCompound();
+		this.writeToNBT(tag);
+		return new SPacketUpdateTileEntity(pos, 1, tag);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+		readFromNBT(packet.getNbtCompound());
 	}
 
 	//Inventory stuff
