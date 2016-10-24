@@ -10,6 +10,7 @@ public class Config {
 	//private static final String CATEGORY_OREGEN = "ore_generation";
 
 	public static int beamDistance = 64;
+	public static int fluidTransfer = 10;
 	//public static boolean genCopper = true;
 
 	public static void readConfig() {
@@ -30,6 +31,7 @@ public class Config {
 	private static void initGeneralConfig(Configuration cfg) {
 		cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
 		beamDistance = cfg.getInt("beamDistance", CATEGORY_GENERAL, beamDistance, 1, 256, "Maximum distance beams can travel");
+		fluidTransfer = cfg.getInt("fluidTransfer", CATEGORY_GENERAL, fluidTransfer, 1, 100000, "Amount of fluid (in mB) to transfer");
 	}
 
 	/*private static void initOregenConfig(Configuration cfg) {

@@ -1,5 +1,6 @@
 package kaikue.xtech;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -37,6 +38,18 @@ public class ModRecipes {
 				'R', "dustRedstone",
 				'L', ModItems.itemLaserCore,
 				'S', "itemSilicon"
+				)
+				);
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ModBlocks.blockFluidInserter),
+				"II ",
+				"RBL",
+				"II ",
+				'I', "ingotIron",
+				'R', "dustRedstone",
+				'L', ModItems.itemLaserCore,
+				'B', Items.BUCKET
 				)
 				);
 	}

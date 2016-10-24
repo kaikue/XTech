@@ -7,7 +7,6 @@ import kaikue.xtech.ModBlocks;
 import kaikue.xtech.blocks.DirectionalBaseBlock;
 import kaikue.xtech.util.Utils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -25,10 +24,10 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	private int destCheckCooldown;
 	private int insertCooldown;
 	protected IBlockState facing;
-	private EnumFacing insertFacing;
+	private EnumFacing insertFace;
 
 	//Check if the position is the correct type for inserting contents
-	abstract protected boolean isReceiverAt(BlockPos checkPos);
+	abstract protected boolean isReceiverAt(BlockPos checkPos, EnumFacing face);
 
 	//Transfer contents into the TileEntity at destPos
 	abstract protected boolean transfer(BlockPos destPos, EnumFacing facing);
@@ -52,9 +51,9 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		insertCooldown--;
 		if(insertCooldown < 1) {
 			boolean transferred = false;
-			if(receiverPos != null && isReceiverAt(receiverPos)) {
+			if(receiverPos != null && isReceiverAt(receiverPos, insertFace)) {
 				if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
-					transferred = transfer(receiverPos, insertFacing);
+					transferred = transfer(receiverPos, insertFace);
 				}
 			}
 			else {
@@ -88,15 +87,13 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 			//don't check out of bounds
 			if(!getWorld().isBlockLoaded(checkPos)) break;
 
-			IBlockState blockState = getWorld().getBlockState(checkPos);
-			if(blockState.getBlock().hasTileEntity(blockState)) {
-				TileEntity tileEntity = getWorld().getTileEntity(checkPos);
-				if (tileEntity != null && tileEntity instanceof IInventory) {
-					receiverPos = checkPos.toImmutable();
-					insertFacing = direction;
-					return;
-				}
+			if(isReceiverAt(checkPos, direction.getOpposite())) {
+				receiverPos = checkPos.toImmutable();
+				insertFace = direction.getOpposite();
+				return;
 			}
+
+			IBlockState blockState = getWorld().getBlockState(checkPos);
 
 			if(blockState.getBlock() == ModBlocks.blockMirror) {
 				direction = turnDirection(direction, getStateFacing(blockState));

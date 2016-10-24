@@ -2,6 +2,7 @@ itemGroup.XTech=XTech
 
 tile.xtech.mirror.name=Mirror
 tile.xtech.iteminserter.name=Item Transpositor
+tile.xtech.fluidinserter.name=Fluid Transpositor
 
 item.xtech.lasercore.name=Laser Core
 item.xtech.silicon.name=Silicon

@@ -22,11 +22,11 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 	}
 
 	@Override
-	protected boolean isReceiverAt(BlockPos checkPos) {
-		return inventoryAt(checkPos) != null;
+	protected boolean isReceiverAt(BlockPos checkPos, EnumFacing face) {
+		return inventoryAt(checkPos, face) != null;
 	}
 
-	private IInventory inventoryAt(BlockPos checkPos) {
+	private IInventory inventoryAt(BlockPos checkPos, EnumFacing face) {
 		IBlockState blockState = getWorld().getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
 			TileEntity tileEntity = getWorld().getTileEntity(checkPos);
@@ -38,17 +38,17 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 	}
 
 	@Override
-	protected boolean transfer(BlockPos destPos, EnumFacing facing) {
-		IInventory dest = inventoryAt(destPos);
+	protected boolean transfer(BlockPos destPos, EnumFacing face) {
+		IInventory dest = inventoryAt(destPos, face);
 		if(dest == null) return false;
 		
-		IInventory source = inventoryAt(pos.offset(getStateFacing(this.facing).getOpposite()));
+		IInventory source = inventoryAt(pos.offset(getStateFacing(this.facing).getOpposite()), getStateFacing(this.facing));
 		if(source == null) return false;
 		
 		for(int i = 0; i < source.getSizeInventory(); i++) {
 			if(source.getStackInSlot(i) != null) {
 				ItemStack itemstackSrc = source.getStackInSlot(i).copy();
-				ItemStack itemstackDest = putStackInInventoryAllSlots(dest, source.decrStackSize(i, 1), facing);
+				ItemStack itemstackDest = putStackInInventoryAllSlots(dest, source.decrStackSize(i, 1), face);
 				
 				if(itemstackDest == null || itemstackDest.stackSize == 0) {
 					source.markDirty();

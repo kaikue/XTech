@@ -1,6 +1,6 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.tileentities.TileEntityItemInserter;
+import kaikue.xtech.tileentities.TileEntityFluidInserter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,12 +12,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockItemInserter extends DirectionalBaseBlock implements ITileEntityProvider {
+public class BlockFluidInserter extends DirectionalBaseBlock implements ITileEntityProvider {
 
 	private static final AxisAlignedBB INSERTER_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
-	public BlockItemInserter() {
-		super("iteminserter", "Transfers items into remote inventories", Material.IRON);
+	public BlockFluidInserter() {
+		super("fluidinserter", "Transfers fluids into remote tanks", Material.IRON);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class BlockItemInserter extends DirectionalBaseBlock implements ITileEnti
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityItemInserter(getStateFromMeta(meta));
+		return new TileEntityFluidInserter(getStateFromMeta(meta));
 	}
 
 }
