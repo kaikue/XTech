@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "xtech:fluidinserter"
+    },
+    "variants": {
+        "facing=up": { "model": "xtech:fluidinserter" },
+        "facing=down": { "model": "xtech:fluidinserter", "x": 180 },
+        "facing=east": { "model": "xtech:fluidinserter", "y": 90, "x": 90 },
+        "facing=south": { "model": "xtech:fluidinserter", "y": 180, "x": 90 },
+        "facing=west": { "model": "xtech:fluidinserter", "y": 270, "x": 90 },
+        "facing=north": { "model": "xtech:fluidinserter", "x": 90 },
+        "inventory": [{ "model": "xtech:fluidinserter" }]
+    }
+}

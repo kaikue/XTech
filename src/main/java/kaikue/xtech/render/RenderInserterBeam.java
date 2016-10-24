@@ -3,7 +3,7 @@ package kaikue.xtech.render;
 import org.lwjgl.opengl.GL11;
 
 import kaikue.xtech.XTech;
-import kaikue.xtech.tileentities.TileEntityItemInserter;
+import kaikue.xtech.tileentities.TileEntityInserter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntityItemInserter> {
+public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInserter> {
 
 	public static enum Color {
 		RED,
@@ -29,7 +29,7 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 	private static final ResourceLocation redLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_red.png");
 	private static final ResourceLocation greenLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_green.png");
 
-	public RenderItemInserterBeam(Color color) {
+	public RenderInserterBeam(Color color) {
 		super();
 		this.color = color;
 	}
@@ -39,9 +39,9 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 	 * @see https://github.com/McJty/McJtyLib/blob/1.10/src/main/java/mcjty/lib/gui/RenderHelper.java
 	 */
 	@Override
-	public void renderTileEntityAt(TileEntityItemInserter teii, double x, double y, double z, float partialTick, int destroyStage) {
+	public void renderTileEntityAt(TileEntityInserter teii, double x, double y, double z, float partialTick, int destroyStage) {
 
-		if(teii.inventoryPos == null || !teii.justTransferred) return;
+		if(teii.receiverPos == null || !teii.justTransferred) return;
 
 		Tessellator tessellator = Tessellator.getInstance();
 
@@ -65,7 +65,7 @@ public class RenderItemInserterBeam extends TileEntitySpecialRenderer<TileEntity
 		GlStateManager.translate(-pX, -pY, -pZ);
 
 		Vec3d emitter = new Vec3d(teii.getPos().getX() + 0.5f, teii.getPos().getY() + 0.5f, teii.getPos().getZ() + 0.5f);
-		Vec3d receiver = new Vec3d(teii.inventoryPos.getX() + 0.5f, teii.inventoryPos.getY() + 0.5f, teii.inventoryPos.getZ() + 0.5f);
+		Vec3d receiver = new Vec3d(teii.receiverPos.getX() + 0.5f, teii.receiverPos.getY() + 0.5f, teii.receiverPos.getZ() + 0.5f);
 		Vec3d player = new Vec3d((float) pX, (float) pY + p.getEyeHeight(), (float) pZ);
 
 		Vec3d prev = emitter;

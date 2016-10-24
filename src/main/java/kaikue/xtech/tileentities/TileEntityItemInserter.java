@@ -1,127 +1,29 @@
 package kaikue.xtech.tileentities;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nullable;
 
-import kaikue.xtech.Config;
-import kaikue.xtech.ModBlocks;
-import kaikue.xtech.blocks.DirectionalBaseBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
-public class TileEntityItemInserter extends TileEntity implements ITickable {
-
-	public BlockPos inventoryPos;
-	public boolean justTransferred;
-	public ArrayList<BlockPos> mirrors = new ArrayList<BlockPos>();
-	private IBlockState facing;
-	private EnumFacing insertFacing;
-	private int invCheckCooldown;
-	private int insertCooldown;
+public class TileEntityItemInserter extends TileEntityInserter implements ITickable {
 
 	public TileEntityItemInserter() {
-		resetInvCheckCooldown();
-		resetInsertCooldown();
+		super();
 	}
 
 	public TileEntityItemInserter(IBlockState facing) {
-		this();
-		this.facing = facing;
+		super(facing);
 	}
 
 	@Override
-	public void update() {
-		if(worldObj.isRemote) return;
-
-		boolean foundInventory = true;
-
-		insertCooldown--;
-		if(insertCooldown < 1) {
-			boolean transferred = false;
-			if(inventoryPos != null) {
-				IInventory inventory = inventoryAt(inventoryPos);
-				if(inventory != null) {
-					if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
-						transferred = transferItem(inventory, insertFacing);
-					}
-				}
-				else {
-					foundInventory = false;
-				}
-			}
-			else {
-				foundInventory = false;
-			}
-			resetInsertCooldown();
-			if(transferred != justTransferred) {
-				justTransferred = transferred;
-				updateInWorld();
-			}
-		}
-
-		invCheckCooldown--;
-		if(invCheckCooldown < 1 || !foundInventory) {
-			BlockPos oldInventoryPos = inventoryPos;
-			findClosestInventory();
-			if((inventoryPos == null && oldInventoryPos != null) || (inventoryPos != null && !inventoryPos.equals(oldInventoryPos))) {
-				updateInWorld();
-			}
-			resetInvCheckCooldown();
-		}
-	}
-
-	private void findClosestInventory() {
-		mirrors = new ArrayList<BlockPos>();
-		EnumFacing direction = getStateFacing(facing);
-		MutableBlockPos checkPos = new MutableBlockPos(pos);
-		for(int i = 0; i < Config.beamDistance; i++) {
-			checkPos.move(direction);
-
-			//don't check out of bounds
-			if(!getWorld().isBlockLoaded(checkPos)) break;
-
-			IBlockState blockState = getWorld().getBlockState(checkPos);
-			if(blockState.getBlock().hasTileEntity(blockState)) {
-				TileEntity tileEntity = getWorld().getTileEntity(checkPos);
-				if (tileEntity != null && tileEntity instanceof IInventory) {
-					inventoryPos = checkPos.toImmutable();
-					insertFacing = direction;
-					return;
-				}
-			}
-
-			if(blockState.getBlock() == ModBlocks.blockMirror) {
-				direction = turnDirection(direction, getStateFacing(blockState));
-				mirrors.add(checkPos.toImmutable());
-				if(direction == null) break; //hit the back of a mirror
-			}
-
-			if(blockState.isOpaqueCube()) {
-				break;
-			}
-		}
-		inventoryPos = null;
-	}
-
-	private EnumFacing turnDirection(EnumFacing original, EnumFacing mirror) {
-		if(mirror == original.getOpposite()) {
-			return original.rotateY();
-		}
-		if(mirror == original.rotateYCCW()) {
-			return mirror;
-		}
-		return null;
+	protected boolean isReceiverAt(BlockPos checkPos) {
+		return inventoryAt(checkPos) != null;
 	}
 
 	private IInventory inventoryAt(BlockPos checkPos) {
@@ -135,7 +37,11 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 		return null;
 	}
 
-	private boolean transferItem(IInventory dest, EnumFacing facing) {
+	@Override
+	protected boolean transfer(BlockPos destPos, EnumFacing facing) {
+		IInventory dest = inventoryAt(destPos);
+		if(dest == null) return false;
+		
 		IInventory source = inventoryAt(pos.offset(getStateFacing(this.facing).getOpposite()));
 		if(source == null) return false;
 		
@@ -153,82 +59,6 @@ public class TileEntityItemInserter extends TileEntity implements ITickable {
 			}
 		}
 		return false;
-	}
-
-	private EnumFacing getStateFacing(IBlockState blockState) {
-		return blockState.getValue(DirectionalBaseBlock.FACING);
-	}
-
-	private void resetInvCheckCooldown() {
-		invCheckCooldown = 20;
-	}
-
-	private void resetInsertCooldown() {
-		insertCooldown = 10;
-	}
-	
-	private void updateInWorld() {
-		if (worldObj != null) {
-			IBlockState state = worldObj.getBlockState(getPos());
-			worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-		}
-		markDirty();
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-		compound.setInteger("facing", ModBlocks.blockItemInserter.getMetaFromState(this.facing));
-		compound.setBoolean("justTransferred", justTransferred);
-		int[] mirrorsX = new int[mirrors.size()];
-		for(int i = 0; i < mirrors.size(); i++) {
-			mirrorsX[i] = mirrors.get(i).getX();
-		}
-		compound.setIntArray("mirrorsX", mirrorsX);
-		int[] mirrorsY = new int[mirrors.size()];
-		for(int i = 0; i < mirrors.size(); i++) {
-			mirrorsY[i] = mirrors.get(i).getY();
-		}
-		compound.setIntArray("mirrorsY", mirrorsY);
-		int[] mirrorsZ = new int[mirrors.size()];
-		for(int i = 0; i < mirrors.size(); i++) {
-			mirrorsZ[i] = mirrors.get(i).getZ();
-		}
-		compound.setIntArray("mirrorsZ", mirrorsZ);
-		if(inventoryPos != null) compound.setLong("inventoryPos", inventoryPos.toLong());
-		return compound;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		this.facing = ModBlocks.blockItemInserter.getStateFromMeta(compound.getInteger("facing"));
-		this.justTransferred = compound.getBoolean("justTransferred");
-		this.mirrors = new ArrayList<BlockPos>();
-		int[] mirrorsX = compound.getIntArray("mirrorsX");
-		int[] mirrorsY = compound.getIntArray("mirrorsY");
-		int[] mirrorsZ = compound.getIntArray("mirrorsZ");
-		for(int i = 0; i < mirrorsX.length; i++) {
-			this.mirrors.add(new BlockPos(mirrorsX[i], mirrorsY[i], mirrorsZ[i]));
-		}
-		this.inventoryPos = compound.hasKey("inventoryPos") ? BlockPos.fromLong(compound.getLong("inventoryPos")) : null;
-	}
-	
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-	
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		this.writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 1, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
 	}
 
 	//Inventory stuff
