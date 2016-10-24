@@ -1,6 +1,7 @@
 package kaikue.xtech.tileentities;
 
 import kaikue.xtech.Config;
+import kaikue.xtech.XTech;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -45,17 +46,14 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 		if(source == null) return false;
 		
 		IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getStateFacing(this.facing));
-		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer, true);
+		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer, false);
 		if(toTransfer == null || toTransfer.amount == 0) return false;
 		
 		IFluidHandler destCap = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
 		int transferred = destCap.fill(toTransfer, true);
-		if(transferred < Config.fluidTransfer) {
-			toTransfer.amount -= transferred;
-			sourceCap.fill(toTransfer, true); //this might not work if you can't fill from the extracted side
-			if(transferred == 0) return false;
-		}
-		return true;
+		XTech.logger.info("drained " + transferred);
+		sourceCap.drain(transferred, true);
+		return transferred > 0;
 	}
 
 }
