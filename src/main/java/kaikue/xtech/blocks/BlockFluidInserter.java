@@ -37,7 +37,7 @@ public class BlockFluidInserter extends DirectionalBaseBlock implements ITileEnt
 	}
 
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		//TODO check for inventory?
+		//TODO check for tank?
 		return super.canPlaceBlockAt(worldIn, pos);
 	}
 
