@@ -50,11 +50,4 @@ public abstract class BlockInserter extends DirectionalBaseBlock {
 		return this.getDefaultState().withProperty(FACING, facing);
 	}
 
-	public IBlockState getStateFromMeta(int meta)
-	{
-		IBlockState iblockstate = this.getDefaultState();
-		iblockstate = iblockstate.withProperty(FACING, EnumFacing.getFront(meta));
-		return iblockstate;
-	}
-
 }

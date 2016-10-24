@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import kaikue.xtech.Config;
 import kaikue.xtech.ModBlocks;
 import kaikue.xtech.blocks.DirectionalBaseBlock;
-import kaikue.xtech.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -23,7 +22,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	public ArrayList<BlockPos> mirrors = new ArrayList<BlockPos>();
 	private int destCheckCooldown;
 	private int insertCooldown;
-	protected IBlockState facing;
+	protected EnumFacing facing;
 	private EnumFacing insertFace;
 
 	//Check if the position is the correct type for inserting contents
@@ -37,7 +36,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		resetInsertCooldown();
 	}
 
-	public TileEntityInserter(IBlockState facing) {
+	public TileEntityInserter(EnumFacing facing) {
 		this();
 		this.facing = facing;
 	}
@@ -79,7 +78,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 
 	private void findClosestReceiver() {
 		mirrors = new ArrayList<BlockPos>();
-		EnumFacing direction = getStateFacing(facing);
+		EnumFacing direction = facing;
 		MutableBlockPos checkPos = new MutableBlockPos(pos);
 		for(int i = 0; i < Config.beamDistance; i++) {
 			checkPos.move(direction);
@@ -117,16 +116,16 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		}
 		return null;
 	}
-	
+
 	protected EnumFacing getStateFacing(IBlockState blockState) {
 		return blockState.getValue(DirectionalBaseBlock.FACING);
 	}
 
-	private void resetDestCheckCooldown() {
+	protected void resetDestCheckCooldown() {
 		destCheckCooldown = 20;
 	}
 
-	private void resetInsertCooldown() {
+	protected void resetInsertCooldown() {
 		insertCooldown = 10;
 	}
 	
@@ -142,7 +141,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
-		compound.setInteger("facing", Utils.getMetaFromState(this.facing));
+		compound.setInteger("facing", facing.getIndex());
 		compound.setBoolean("justTransferred", justTransferred);
 		int[] mirrorsX = new int[mirrors.size()];
 		for(int i = 0; i < mirrors.size(); i++) {
@@ -166,7 +165,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.facing = ModBlocks.blockItemInserter.getStateFromMeta(compound.getInteger("facing"));
+		this.facing = EnumFacing.getFront(compound.getInteger("facing"));
 		this.justTransferred = compound.getBoolean("justTransferred");
 		this.mirrors = new ArrayList<BlockPos>();
 		int[] mirrorsX = compound.getIntArray("mirrorsX");

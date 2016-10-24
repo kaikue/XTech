@@ -17,7 +17,7 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 		super();
 	}
 
-	public TileEntityFluidInserter(IBlockState facing) {
+	public TileEntityFluidInserter(EnumFacing facing) {
 		super(facing);
 	}
 
@@ -42,10 +42,10 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 		TileEntity dest = tankAt(destPos, face);
 		if(dest == null) return false;
 		
-		TileEntity source = tankAt(pos.offset(getStateFacing(this.facing).getOpposite()), getStateFacing(this.facing));
+		TileEntity source = tankAt(pos.offset(facing.getOpposite()), facing);
 		if(source == null) return false;
 		
-		IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getStateFacing(this.facing));
+		IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
 		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer, false);
 		if(toTransfer == null || toTransfer.amount == 0) return false;
 		

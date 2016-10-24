@@ -15,7 +15,7 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 		super();
 	}
 
-	public TileEntityItemInserter(IBlockState facing) {
+	public TileEntityItemInserter(EnumFacing facing) {
 		super(facing);
 	}
 
@@ -40,11 +40,11 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 		TileEntity dest = inventoryAt(destPos, face);
 		if(dest == null) return false;
 
-		TileEntity source = inventoryAt(pos.offset(getStateFacing(this.facing).getOpposite()), getStateFacing(this.facing));
+		TileEntity source = inventoryAt(pos.offset(facing.getOpposite()), facing);
 		if(source == null) return false;
 
 		IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);
-		IItemHandler sourceHandler = source.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getStateFacing(this.facing));
+		IItemHandler sourceHandler = source.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 
 		for(int i = 0; i < sourceHandler.getSlots(); i++) {
 			ItemStack itemToTransfer = sourceHandler.extractItem(i, 1, true);

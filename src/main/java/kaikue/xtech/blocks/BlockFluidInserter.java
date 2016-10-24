@@ -4,6 +4,7 @@ import kaikue.xtech.tileentities.TileEntityFluidInserter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -20,7 +21,7 @@ public class BlockFluidInserter extends BlockInserter implements ITileEntityProv
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityFluidInserter(getStateFromMeta(meta));
+		return new TileEntityFluidInserter(EnumFacing.getFront(meta));
 	}
 
 }
