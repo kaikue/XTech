@@ -136,7 +136,6 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		}
 		markDirty();
 	}
-	
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {

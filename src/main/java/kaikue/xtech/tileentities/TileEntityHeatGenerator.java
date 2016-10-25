@@ -5,11 +5,11 @@ import net.minecraft.util.EnumFacing;
 public class TileEntityHeatGenerator extends TileEntityGenerator {
 
 	public TileEntityHeatGenerator() {
-		super();
+		super(16);
 	}
 
 	public TileEntityHeatGenerator(EnumFacing facing) {
-		super(facing);
+		super(16, facing);
 	}
 
 }

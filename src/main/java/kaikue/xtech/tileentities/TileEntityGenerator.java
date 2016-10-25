@@ -9,12 +9,16 @@ import net.minecraft.util.math.BlockPos;
 
 public abstract class TileEntityGenerator extends TileEntityInserter implements ITickable {
 
-	public TileEntityGenerator() {
+	private int energyGenerated;
+
+	public TileEntityGenerator(int energyGenerated) {
 		super();
+		this.energyGenerated = energyGenerated;
 	}
 
-	public TileEntityGenerator(EnumFacing facing) {
+	public TileEntityGenerator(int energyGenerated, EnumFacing facing) {
 		super(facing);
+		this.energyGenerated = energyGenerated;
 	}
 
 	@Override
@@ -24,15 +28,15 @@ public abstract class TileEntityGenerator extends TileEntityInserter implements 
 	
 	@Override
 	protected void resetInsertCooldown() {
-		insertCooldown = 2;
+		insertCooldown = 1;
 	}
 
-	private TileEntity consumerAt(BlockPos checkPos, EnumFacing face) {
+	private TileEntityConsumer consumerAt(BlockPos checkPos, EnumFacing face) {
 		IBlockState blockState = getWorld().getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
 			TileEntity tileEntity = getWorld().getTileEntity(checkPos);
 			if(tileEntity != null && tileEntity instanceof TileEntityConsumer) {
-				return tileEntity;
+				return (TileEntityConsumer)tileEntity;
 			}
 		}
 		return null;
@@ -40,18 +44,13 @@ public abstract class TileEntityGenerator extends TileEntityInserter implements 
 
 	@Override
 	protected boolean transfer(BlockPos destPos, EnumFacing face) {
-		TileEntity dest = consumerAt(destPos, face);
+		if(worldObj.getTotalWorldTime() % 2 == 1) return false;
+
+		TileEntityConsumer dest = consumerAt(destPos, face);
 		if(dest == null) return false;
-		
-		/*IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer, false);
-		if(toTransfer == null || toTransfer.amount == 0) return false;
-		
-		IFluidHandler destCap = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
-		int transferred = destCap.fill(toTransfer, true);
-		XTech.logger.info("drained " + transferred);
-		sourceCap.drain(transferred, true);
-		return transferred > 0;*/
+
+		XTech.logger.info("generating");
+		dest.addEnergy(energyGenerated);
 		return true;
 	}
 
