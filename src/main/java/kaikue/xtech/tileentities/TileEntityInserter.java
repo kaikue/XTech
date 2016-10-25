@@ -20,8 +20,8 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	public BlockPos receiverPos;
 	public boolean justTransferred;
 	public ArrayList<BlockPos> mirrors = new ArrayList<BlockPos>();
-	private int destCheckCooldown;
-	private int insertCooldown;
+	protected int destCheckCooldown;
+	protected int insertCooldown;
 	protected EnumFacing facing;
 	private EnumFacing insertFace;
 

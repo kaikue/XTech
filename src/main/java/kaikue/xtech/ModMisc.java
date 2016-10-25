@@ -1,7 +1,9 @@
 package kaikue.xtech;
 
 import kaikue.xtech.tileentities.TileEntityFluidInserter;
+import kaikue.xtech.tileentities.TileEntityHeatGenerator;
 import kaikue.xtech.tileentities.TileEntityItemInserter;
+import kaikue.xtech.tileentities.TileEntitySmelterConsumer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -27,5 +29,7 @@ public class ModMisc {
 	public static void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityItemInserter.class, XTech.MODID + "_iteminserter");
 		GameRegistry.registerTileEntity(TileEntityFluidInserter.class, XTech.MODID + "_fluidinserter");
+		GameRegistry.registerTileEntity(TileEntityHeatGenerator.class, XTech.MODID + "_heatgenerator");
+		GameRegistry.registerTileEntity(TileEntitySmelterConsumer.class, XTech.MODID + "_smelterconsumer");
 	}
 }

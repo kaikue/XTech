@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xtech:blocks/smelter_side",
+    "down": "xtech:blocks/smelter_bottom",
+    "up": "xtech:blocks/smelter_top",
+    "east": "xtech:blocks/smelter_side",
+    "west": "xtech:blocks/smelter_side",
+    "north": "xtech:blocks/smelter_front",
+    "south": "xtech:blocks/smelter_side"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xtech:blocks/heat_generator_side",
+    "down": "xtech:blocks/heat_generator_bottom",
+    "up": "xtech:blocks/heat_generator_top",
+    "east": "xtech:blocks/heat_generator_side",
+    "west": "xtech:blocks/heat_generator_side",
+    "north": "xtech:blocks/heat_generator_front",
+    "south": "xtech:blocks/heat_generator_side"
+  }
+}
