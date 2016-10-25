@@ -1,15 +1,16 @@
 package kaikue.xtech.tileentities;
 
+import kaikue.xtech.Config;
 import net.minecraft.util.EnumFacing;
 
 public class TileEntityHeatGenerator extends TileEntityGenerator {
 
 	public TileEntityHeatGenerator() {
-		super(16);
+		super(Config.heatGeneration);
 	}
 
 	public TileEntityHeatGenerator(EnumFacing facing) {
-		super(16, facing);
+		super(Config.heatGeneration, facing);
 	}
 
 }
