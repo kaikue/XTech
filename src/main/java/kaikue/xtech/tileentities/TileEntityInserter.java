@@ -44,6 +44,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	@Override
 	public void update() {
 		if(worldObj.isRemote) return;
+		if(!shouldUpdate()) return;
 
 		boolean foundReceiver = true;
 
@@ -127,6 +128,11 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 
 	protected void resetInsertCooldown() {
 		insertCooldown = 10;
+	}
+
+	protected boolean shouldUpdate() {
+		//Override this if you don't want to check for update every tick
+		return true;
 	}
 	
 	private void updateInWorld() {

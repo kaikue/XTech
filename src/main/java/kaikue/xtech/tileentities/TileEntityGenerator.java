@@ -31,6 +31,11 @@ public abstract class TileEntityGenerator extends TileEntityInserter implements 
 		insertCooldown = 1;
 	}
 
+	@Override
+	protected boolean shouldUpdate() {
+		return worldObj.getTotalWorldTime() % 2 == 0;
+	}
+
 	private TileEntityConsumer consumerAt(BlockPos checkPos, EnumFacing face) {
 		IBlockState blockState = getWorld().getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
@@ -44,8 +49,6 @@ public abstract class TileEntityGenerator extends TileEntityInserter implements 
 
 	@Override
 	protected boolean transfer(BlockPos destPos, EnumFacing face) {
-		if(worldObj.getTotalWorldTime() % 2 == 1) return false;
-
 		TileEntityConsumer dest = consumerAt(destPos, face);
 		if(dest == null) return false;
 
