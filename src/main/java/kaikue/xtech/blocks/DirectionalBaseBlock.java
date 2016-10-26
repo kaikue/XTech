@@ -1,5 +1,6 @@
 package kaikue.xtech.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -13,20 +14,20 @@ public class DirectionalBaseBlock extends BaseBlock {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-	public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab) {
-		super(name, description, material, addToCreativeTab);
+	public DirectionalBaseBlock(String name, String description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
+		super(name, description, material, hardness, sound, addToCreativeTab);
 	}
 
-	public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab) {
-		super(name, material, addToCreativeTab);
+	public DirectionalBaseBlock(String name, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
+		super(name, material, hardness, sound, addToCreativeTab);
 	}
 
-	public DirectionalBaseBlock(String name, String description, Material material) {
-		super(name, description, material);
+	public DirectionalBaseBlock(String name, String description, Material material, float hardness, SoundType sound) {
+		super(name, description, material, hardness, sound);
 	}
 
-	public DirectionalBaseBlock(String name, Material material) {
-		super(name, material);
+	public DirectionalBaseBlock(String name, Material material, float hardness, SoundType sound) {
+		super(name, material, hardness, sound);
 	}
 
 	public int getMetaFromState(IBlockState state) {

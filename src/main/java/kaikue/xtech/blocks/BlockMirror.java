@@ -3,6 +3,7 @@ package kaikue.xtech.blocks;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,7 +27,7 @@ public class BlockMirror extends BaseBlock {
 	private static final AxisAlignedBB MIRROR_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
 	public BlockMirror() {
-		super("mirror", "Changes the direction of beams", Material.GLASS);
+		super("mirror", "Changes the direction of beams", Material.GLASS, 0.3f, SoundType.GLASS);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH));
 	}
 

@@ -3,6 +3,7 @@ package kaikue.xtech.blocks;
 import kaikue.xtech.ModMisc;
 import kaikue.xtech.XTech;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +16,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BaseBlock extends Block {
-	public BaseBlock(String name, String description, Material material, boolean addToCreativeTab) {
+	public BaseBlock(String name, String description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
 		super(material);
 		setUnlocalizedName(XTech.MODID + "." + name);
+		setHardness(hardness);
+		setSoundType(sound);
 		setRegistryName(name);
 		GameRegistry.register(this);
 		ItemBlock itemBlock = getItemBlock(description);
@@ -27,16 +30,16 @@ public class BaseBlock extends Block {
 		}
 	}
 
-	public BaseBlock(String name, Material material, boolean addToCreativeTab) {
-		this(name, null, material, addToCreativeTab);
+	public BaseBlock(String name, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
+		this(name, null, material, hardness, sound, addToCreativeTab);
 	}
 
-	public BaseBlock(String name, String description, Material material) {
-		this(name, description, material, true);
+	public BaseBlock(String name, String description, Material material, float hardness, SoundType sound) {
+		this(name, description, material, hardness, sound, true);
 	}
 
-	public BaseBlock(String name, Material material) {
-		this(name, null, material, true);
+	public BaseBlock(String name, Material material, float hardness, SoundType sound) {
+		this(name, null, material, hardness, sound, true);
 	}
 
 	private ItemBlock getItemBlock(final String description) {
