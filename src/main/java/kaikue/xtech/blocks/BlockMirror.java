@@ -11,10 +11,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -42,11 +44,11 @@ public class BlockMirror extends BaseBlock {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return MIRROR_AABB;
 	}
 
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		EnumFacing playerFacing = placer.getHorizontalFacing().getOpposite();
@@ -54,14 +56,22 @@ public class BlockMirror extends BaseBlock {
 		return this.getDefaultState().withProperty(FACING, mirrorFacing);
 	}
 
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
-	{
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
 		if(worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.down())) {
-			EnumOrientation oldFacing = state.getValue(FACING);
-			worldIn.setBlockState(pos, state.withProperty(FACING, oldFacing.rotateY()), 2);
+			rotate(worldIn, pos);
 		}
 	}
 
+	@Override
+	public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		if(worldIn.isRemote) {
+			return;
+		}
+		rotate(worldIn, pos);
+	}
+
+	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote) {
 			return true;
@@ -69,17 +79,20 @@ public class BlockMirror extends BaseBlock {
 		EnumOrientation oldFacing = state.getValue(FACING);
 		state = state.withProperty(FACING, oldFacing.tilt());
 		worldIn.setBlockState(pos, state, 2);
+		playAdjustedSound(worldIn, pos);
 		return true;
 	}
 
-	public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-		if(worldIn.isRemote) {
-			return;
-		}
+	private void rotate(World worldIn, BlockPos pos) {
 		IBlockState state = worldIn.getBlockState(pos);
 		EnumOrientation oldFacing = state.getValue(FACING);
 		state = state.withProperty(FACING, oldFacing.rotateY());
 		worldIn.setBlockState(pos, state, 2);
+		playAdjustedSound(worldIn, pos);
+	}
+
+	private void playAdjustedSound(World worldIn, BlockPos pos) {
+		worldIn.playSound(null, pos, SoundEvents.BLOCK_GLASS_HIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 
 	public IBlockState getStateFromMeta(int meta) {
