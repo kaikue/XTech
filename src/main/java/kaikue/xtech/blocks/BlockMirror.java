@@ -71,6 +71,16 @@ public class BlockMirror extends BaseBlock {
 		return true;
 	}
 
+	public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+		if(worldIn.isRemote) {
+			return;
+		}
+		IBlockState state = worldIn.getBlockState(pos);
+		EnumOrientation oldFacing = state.getValue(FACING);
+		state = state.withProperty(FACING, oldFacing.rotateY());
+		worldIn.setBlockState(pos, state, 2);
+	}
+
 	public IBlockState getStateFromMeta(int meta) {
 		EnumOrientation facing = EnumOrientation.byMetadata(meta);
 		return this.getDefaultState().withProperty(FACING, facing);
@@ -79,14 +89,6 @@ public class BlockMirror extends BaseBlock {
 	public int getMetaFromState(IBlockState state) {
 		return ((EnumOrientation)state.getValue(FACING)).getMetadata();
 	}
-
-	/*public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
-	}
-
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
-	}*/
 
 	public BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] {FACING});
