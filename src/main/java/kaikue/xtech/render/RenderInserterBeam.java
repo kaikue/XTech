@@ -47,11 +47,12 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_ENABLE_BIT | GL11.GL_LIGHTING_BIT);
 		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
+		GL11.glDisable(GL11.GL_LIGHTING);
 		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		GlStateManager.enableDepth();
-		GlStateManager.depthMask(false);
-		GlStateManager.pushMatrix();
+		GL11.glDepthMask(false);
+		GL11.glPushMatrix();
 		switch (color) {
 		case BLUE: this.bindTexture(blueLaser); break;
 		case RED: this.bindTexture(redLaser); break;
@@ -62,7 +63,7 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 		double pX = p.lastTickPosX + (p.posX - p.lastTickPosX) * partialTick;
 		double pY = p.lastTickPosY + (p.posY - p.lastTickPosY) * partialTick;
 		double pZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * partialTick;
-		GlStateManager.translate(-pX, -pY, -pZ);
+		GL11.glTranslated(-pX, -pY, -pZ);
 
 		Vec3d emitter = new Vec3d(teii.getPos().getX() + 0.5f, teii.getPos().getY() + 0.5f, teii.getPos().getZ() + 0.5f);
 		Vec3d receiver = new Vec3d(teii.receiverPos.getX() + 0.5f, teii.receiverPos.getY() + 0.5f, teii.receiverPos.getZ() + 0.5f);
@@ -75,10 +76,13 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 			prev = mirrorVec;
 		}
 		drawBeam(prev, receiver, player, 0.2f);
-
 		tessellator.draw();
+		GL11.glDepthMask(true);
+		GlStateManager.disableDepth();
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
-		GlStateManager.popMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
 		GL11.glPopAttrib();
 	}
 
