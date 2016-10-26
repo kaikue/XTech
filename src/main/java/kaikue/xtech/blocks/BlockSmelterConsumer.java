@@ -13,6 +13,6 @@ public class BlockSmelterConsumer extends BlockConsumer {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySmelterConsumer(); //EnumFacing.getFront(meta)
+		return new TileEntitySmelterConsumer();
 	}
 }

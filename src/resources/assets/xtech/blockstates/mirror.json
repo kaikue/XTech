@@ -4,8 +4,14 @@
         "model": "xtech:mirror"
     },
     "variants": {
-        "facing=up":  { "model": "xtech:mirror", "z": 90 },
-        "facing=down":  { "model": "xtech:mirror", "z": 270 },
+        "facing=up_north":  { "model": "xtech:mirror_up", "y": 270 },
+        "facing=up_south":  { "model": "xtech:mirror_up", "y": 90 },
+        "facing=up_east":  { "model": "xtech:mirror_up" },
+        "facing=up_west":  { "model": "xtech:mirror_up", "y": 180 },
+        "facing=down_north":  { "model": "xtech:mirror_down", "y": 270 },
+        "facing=down_south":  { "model": "xtech:mirror_down", "y": 90 },
+        "facing=down_east":  { "model": "xtech:mirror_down" },
+        "facing=down_west":  { "model": "xtech:mirror_down", "y": 180 },
         "facing=north": { "model": "xtech:mirror", "y": 180 },
         "facing=south": { "model": "xtech:mirror" },
         "facing=west":  { "model": "xtech:mirror", "y": 90 },

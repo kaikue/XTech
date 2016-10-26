@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import kaikue.xtech.Config;
 import kaikue.xtech.ModBlocks;
-import kaikue.xtech.blocks.DirectionalBaseBlock;
+import kaikue.xtech.blocks.BlockMirror;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
@@ -22,7 +23,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	public ArrayList<BlockPos> mirrors = new ArrayList<BlockPos>();
 	protected int destCheckCooldown;
 	protected int insertCooldown;
-	protected EnumFacing facing;
+	public EnumFacing facing;
 	private EnumFacing insertFace;
 
 	//Check if the position is the correct type for inserting contents
@@ -108,18 +109,34 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		receiverPos = null;
 	}
 
-	private EnumFacing turnDirection(EnumFacing original, EnumFacing mirror) {
-		if(mirror == original.getOpposite()) {
-			return original.rotateY();
+	private EnumFacing turnDirection(EnumFacing original, BlockMirror.EnumOrientation mirror) {
+		if(mirror.isHorizontal()) {
+			if(original.getAxis() == Axis.Y) return null;
+			EnumFacing horiz = mirror.getFacing();
+			if(horiz == original.getOpposite()) {
+				return original.rotateY();
+			}
+			if(horiz == original.rotateYCCW()) {
+				return horiz;
+			}
+			return null;
 		}
-		if(mirror == original.rotateYCCW()) {
-			return mirror;
+
+		//mirror is up or down
+		EnumFacing horizComponent = mirror.getHorizontalComponent();
+		EnumFacing verticalComponent = mirror.getFacing();
+		if(original == horizComponent.getOpposite()) {
+			return verticalComponent;
 		}
+		if(original == verticalComponent.getOpposite()) {
+			return horizComponent;
+		}
+
 		return null;
 	}
 
-	protected EnumFacing getStateFacing(IBlockState blockState) {
-		return blockState.getValue(DirectionalBaseBlock.FACING);
+	protected BlockMirror.EnumOrientation getStateFacing(IBlockState blockState) {
+		return blockState.getValue(BlockMirror.FACING);
 	}
 
 	protected void resetDestCheckCooldown() {

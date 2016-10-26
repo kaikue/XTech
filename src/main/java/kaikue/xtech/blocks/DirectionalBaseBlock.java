@@ -13,43 +13,40 @@ public class DirectionalBaseBlock extends BaseBlock {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-	public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab)
-	{
+	public DirectionalBaseBlock(String name, String description, Material material, boolean addToCreativeTab) {
 		super(name, description, material, addToCreativeTab);
 	}
 
-	public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab)
-	{
+	public DirectionalBaseBlock(String name, Material material, boolean addToCreativeTab) {
 		super(name, material, addToCreativeTab);
 	}
 
-	public DirectionalBaseBlock(String name, String description, Material material)
-	{
+	public DirectionalBaseBlock(String name, String description, Material material) {
 		super(name, description, material);
 	}
 
-	public DirectionalBaseBlock(String name, Material material)
-	{
+	public DirectionalBaseBlock(String name, Material material) {
 		super(name, material);
 	}
 
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return ((EnumFacing)state.getValue(FACING)).getIndex();
 	}
 
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		return this.getDefaultState().withProperty(FACING, enumfacing);
+	}
+
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
 	}
 
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
 	}
 
-	public BlockStateContainer createBlockState()
-	{
+	public BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
 }
