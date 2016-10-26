@@ -1,17 +1,9 @@
 package kaikue.xtech.blocks;
 
-import javax.annotation.Nullable;
-
-import kaikue.xtech.XTech;
-import kaikue.xtech.tileentities.TileEntityItemInserter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -38,27 +30,6 @@ public abstract class BlockInserter extends DirectionalBaseBlock {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
-	}
-
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) {
-			return true;
-		}
-		TileEntityItemInserter inserter = inserterAt(worldIn, pos);
-		XTech.logger.info(inserter.facing);
-		return true;
-	}
-
-	//TODO remove
-	private TileEntityItemInserter inserterAt(World worldIn, BlockPos checkPos) {
-		IBlockState blockState = worldIn.getBlockState(checkPos);
-		if(blockState.getBlock().hasTileEntity(blockState)) {
-			TileEntity tileEntity = worldIn.getTileEntity(checkPos);
-			if(tileEntity != null && tileEntity instanceof TileEntityItemInserter) {
-				return (TileEntityItemInserter)tileEntity;
-			}
-		}
-		return null;
 	}
 
 	@Override
