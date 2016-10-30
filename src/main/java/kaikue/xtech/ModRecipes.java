@@ -18,11 +18,23 @@ public class ModRecipes {
 				'G', "blockGlass"
 				)
 				);
+
 		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ModBlocks.blockMirror),
-				"  G",
-				"SIG",
-				"  G",
+				" G",
+				"IG",
+				"SG",
+				'S', "itemSilicon",
+				'I', "ingotIron",
+				'G', "blockGlass"
+				)
+				);
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ModBlocks.blockSplitter),
+				"G G",
+				"GIG",
+				"GSG",
 				'S', "itemSilicon",
 				'I', "ingotIron",
 				'G', "blockGlass"

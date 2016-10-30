@@ -33,6 +33,10 @@ public class BlockMirror extends BaseBlock {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH));
 	}
 
+	public BlockMirror(String name, String description, Material material, float hardness, SoundType sound) {
+		super(name, description, material, hardness, sound);
+	}
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
@@ -49,8 +53,7 @@ public class BlockMirror extends BaseBlock {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		EnumFacing playerFacing = placer.getHorizontalFacing().getOpposite();
 		EnumOrientation mirrorFacing = EnumOrientation.fromHorizontalFacing(playerFacing);
 		return this.getDefaultState().withProperty(FACING, mirrorFacing);

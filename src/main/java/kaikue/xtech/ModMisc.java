@@ -20,6 +20,7 @@ public class ModMisc {
 	public static void init() {
 		initOreDict();
 		registerTileEntities();
+		registerWorldGeneration();
 	}
 
 	public static void initOreDict() {
@@ -31,5 +32,9 @@ public class ModMisc {
 		GameRegistry.registerTileEntity(TileEntityFluidInserter.class, XTech.MODID + "_fluidinserter");
 		GameRegistry.registerTileEntity(TileEntityHeatGenerator.class, XTech.MODID + "_heatgenerator");
 		GameRegistry.registerTileEntity(TileEntitySmelterConsumer.class, XTech.MODID + "_smelterconsumer");
+	}
+
+	public static void registerWorldGeneration() {
+		GameRegistry.registerWorldGenerator(new ModWorldGen(), 4);
 	}
 }

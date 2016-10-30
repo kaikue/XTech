@@ -7,8 +7,12 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 	private static final String CATEGORY_GENERAL = "general";
+	private static final String CATEGORY_GENERATION = "worldgeneration";
 	private static final String CATEGORY_POWER = "power";
 
+	public static boolean generateSilicon = true;
+	public static int siliconChance = 2;
+	public static int siliconTries = 8;
 	public static int beamDistance = 64;
 	public static int fluidTransfer = 100;
 	
@@ -20,6 +24,7 @@ public class Config {
 		try {
 			cfg.load();
 			initGeneralConfig(cfg);
+			initWorldGenConfig(cfg);
 			initPowerConfig(cfg);
 		} catch (Exception ex) {
 			XTech.logger.log(Level.ERROR, "Problem loading config file!", ex);
@@ -34,6 +39,13 @@ public class Config {
 		cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
 		beamDistance = cfg.getInt("beamDistance", CATEGORY_GENERAL, beamDistance, 1, 256, "Maximum distance beams can travel");
 		fluidTransfer = cfg.getInt("fluidTransfer", CATEGORY_GENERAL, fluidTransfer, 1, 100000, "Amount of fluid (in mB) to transfer per half-second");
+	}
+
+	private static void initWorldGenConfig(Configuration cfg) {
+		cfg.addCustomCategoryComment(CATEGORY_GENERATION, "World generation configuration");
+		generateSilicon = cfg.getBoolean("generateSilicon", CATEGORY_GENERATION, generateSilicon, "Generate silicon crystals underground");
+		siliconChance = cfg.getInt("siliconChance", CATEGORY_GENERATION, siliconChance, 1, 256, "Chance to generate a silicon crystal per chunk (1 = 100% chance)");
+		siliconTries = cfg.getInt("siliconTries", CATEGORY_GENERATION, siliconTries, 1, 32, "Number of attempts to generate silicon in a chunk");
 	}
 	
 	private static void initPowerConfig(Configuration cfg) {
