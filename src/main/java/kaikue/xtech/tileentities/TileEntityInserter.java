@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Queue;
 
 import kaikue.xtech.Config;
-import kaikue.xtech.XTech;
 import kaikue.xtech.blocks.BlockMirror;
 import kaikue.xtech.blocks.BlockSplitter;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -69,10 +69,8 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		if(insertCooldown < 1) {
 			boolean transferred = false;
 			if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
-				//XTech.logger.info("starting insert");
 				for(Receiver receiver : receivers) {
 					if(isReceiverAt(receiver.pos, receiver.direction)) {
-						//XTech.logger.info("inserted into " + receiver.pos + ", factor " + receiver.reduction);
 						transferred |= transfer(receiver.pos, receiver.direction, receiver.reduction);
 					}
 					else {
@@ -125,12 +123,20 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 
 				IBlockState blockState = getWorld().getBlockState(checkPos);
 
-				if(blockState.getBlock() instanceof BlockMirror) {
+				Block block = blockState.getBlock();
+				if(block instanceof BlockMirror) {
 					BlockPos p = checkPos.toImmutable();
 					EnumFacing newDirection = turnDirection(direction, getStateFacing(blockState));
-					if(newDirection == null) break; //hit the back of a mirror
-					//new direction may need to be flipped- splitters are bidirectional
-					if(blockState.getBlock() instanceof BlockSplitter) {
+					if(newDirection == null) {
+						EnumFacing otherDirection = turnDirection(direction.getOpposite(), getStateFacing(blockState));
+						if(otherDirection != null && block instanceof BlockSplitter) {
+							newDirection = otherDirection.getOpposite();
+						}
+						else {
+							break;
+						}
+					}
+					if(block instanceof BlockSplitter) {
 						reduction *= 2;
 						Receiver state = new Receiver(p, i, direction, reduction); //current direction
 						queue.add(state);
