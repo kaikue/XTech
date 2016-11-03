@@ -39,9 +39,9 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 	 * @see https://github.com/McJty/McJtyLib/blob/1.10/src/main/java/mcjty/lib/gui/RenderHelper.java
 	 */
 	@Override
-	public void renderTileEntityAt(TileEntityInserter teii, double x, double y, double z, float partialTick, int destroyStage) {
+	public void renderTileEntityAt(TileEntityInserter tei, double x, double y, double z, float partialTick, int destroyStage) {
 
-		if(teii.receiverPos == null || !teii.justTransferred) return;
+		if(!tei.justTransferred) return;
 
 		Tessellator tessellator = Tessellator.getInstance();
 
@@ -65,17 +65,16 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 		double pZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * partialTick;
 		GL11.glTranslated(-pX, -pY, -pZ);
 
-		Vec3d emitter = new Vec3d(teii.getPos().getX() + 0.5f, teii.getPos().getY() + 0.5f, teii.getPos().getZ() + 0.5f);
-		Vec3d receiver = new Vec3d(teii.receiverPos.getX() + 0.5f, teii.receiverPos.getY() + 0.5f, teii.receiverPos.getZ() + 0.5f);
 		Vec3d player = new Vec3d((float) pX, (float) pY + p.getEyeHeight(), (float) pZ);
 
-		Vec3d prev = emitter;
-		for(BlockPos mirrorPos : teii.mirrors) {
-			Vec3d mirrorVec = new Vec3d(mirrorPos.getX() + 0.5f, mirrorPos.getY() + 0.5f, mirrorPos.getZ() + 0.5f);
-			drawBeam(prev, mirrorVec, player, 0.2f);
-			prev = mirrorVec;
+		for(int i = 0; i < tei.segments.size(); i+= 2) {
+			BlockPos startPos = tei.segments.get(i);
+			BlockPos endPos = tei.segments.get(i + 1);
+			Vec3d startVec = new Vec3d(startPos.getX() + 0.5f, startPos.getY() + 0.5f, startPos.getZ() + 0.5f);
+			Vec3d endVec = new Vec3d(endPos.getX() + 0.5f, endPos.getY() + 0.5f, endPos.getZ() + 0.5f);
+			drawBeam(startVec, endVec, player, 0.2f);
 		}
-		drawBeam(prev, receiver, player, 0.2f);
+
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GlStateManager.disableDepth();

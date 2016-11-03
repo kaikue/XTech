@@ -36,7 +36,7 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 	}
 
 	@Override
-	protected boolean transfer(BlockPos destPos, EnumFacing face) {
+	protected boolean transfer(BlockPos destPos, EnumFacing face, int reduction) {
 		TileEntity dest = inventoryAt(destPos, face);
 		if(dest == null) return false;
 

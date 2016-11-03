@@ -48,12 +48,12 @@ public abstract class TileEntityGenerator extends TileEntityInserter implements 
 	}
 
 	@Override
-	protected boolean transfer(BlockPos destPos, EnumFacing face) {
+	protected boolean transfer(BlockPos destPos, EnumFacing face, int reduction) {
 		TileEntityConsumer dest = consumerAt(destPos, face);
 		if(dest == null) return false;
 
 		XTech.logger.info("generating");
-		dest.addEnergy(energyGenerated);
+		dest.addEnergy(energyGenerated / reduction);
 		return true;
 	}
 

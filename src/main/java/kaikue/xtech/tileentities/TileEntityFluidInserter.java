@@ -38,7 +38,7 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 	}
 
 	@Override
-	protected boolean transfer(BlockPos destPos, EnumFacing face) {
+	protected boolean transfer(BlockPos destPos, EnumFacing face, int reduction) {
 		TileEntity dest = tankAt(destPos, face);
 		if(dest == null) return false;
 		
@@ -46,12 +46,12 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 		if(source == null) return false;
 		
 		IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer, false);
+		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer / reduction, false);
 		if(toTransfer == null || toTransfer.amount == 0) return false;
 		
 		IFluidHandler destCap = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
 		int transferred = destCap.fill(toTransfer, true);
-		XTech.logger.info("drained " + transferred);
+		XTech.logger.info("drained " + transferred + " into " + destPos + ": reduction " + reduction);
 		sourceCap.drain(transferred, true);
 		return transferred > 0;
 	}
