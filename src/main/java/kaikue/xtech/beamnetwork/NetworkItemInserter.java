@@ -1,34 +1,34 @@
-package kaikue.xtech.tileentities;
+package kaikue.xtech.beamnetwork;
 
 import kaikue.xtech.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityItemInserter extends TileEntityInserter implements ITickable {
+public class NetworkItemInserter extends NetworkInserter {
 
-	public TileEntityItemInserter() {
+	public NetworkItemInserter() {
 		super();
 	}
 
-	public TileEntityItemInserter(EnumFacing facing) {
+	public NetworkItemInserter(EnumFacing facing) {
 		super(facing);
 	}
 
 	@Override
-	protected boolean isReceiverAt(BlockPos checkPos, EnumFacing face) {
-		return inventoryAt(checkPos, face) != null;
+	protected boolean isReceiverAt(World world, BlockPos checkPos, EnumFacing face) {
+		return inventoryAt(world, checkPos, face) != null;
 	}
 
-	private TileEntity inventoryAt(BlockPos checkPos, EnumFacing face) {
-		IBlockState blockState = getWorld().getBlockState(checkPos);
+	private TileEntity inventoryAt(World world, BlockPos checkPos, EnumFacing face) {
+		IBlockState blockState = world.getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
-			TileEntity tileEntity = getWorld().getTileEntity(checkPos);
+			TileEntity tileEntity = world.getTileEntity(checkPos);
 			if(tileEntity != null && tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face)) {
 				return tileEntity;
 			}
@@ -37,11 +37,11 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 	}
 
 	@Override
-	protected boolean transfer(BlockPos destPos, EnumFacing face, int reduction) {
-		TileEntity dest = inventoryAt(destPos, face);
+	protected boolean transfer(World world, BlockPos myPos, BlockPos destPos, EnumFacing face, int reduction) {
+		TileEntity dest = inventoryAt(world, destPos, face);
 		if(dest == null) return false;
 
-		TileEntity source = inventoryAt(pos.offset(facing.getOpposite()), facing);
+		TileEntity source = inventoryAt(world, myPos.offset(facing.getOpposite()), facing);
 		if(source == null) return false;
 
 		IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);

@@ -3,7 +3,11 @@ package kaikue.xtech.render;
 import org.lwjgl.opengl.GL11;
 
 import kaikue.xtech.XTech;
-import kaikue.xtech.tileentities.TileEntityInserter;
+import kaikue.xtech.beamnetwork.NetworkFluidInserter;
+import kaikue.xtech.beamnetwork.NetworkGenerator;
+import kaikue.xtech.beamnetwork.NetworkInserter;
+import kaikue.xtech.beamnetwork.NetworkItemInserter;
+import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,33 +19,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInserter> {
+public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeamNetwork> {
 
-	public static enum Color {
-		RED,
-		GREEN,
-		BLUE
-	};
-
-	private Color color;
-	
 	private static final ResourceLocation blueLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_blue.png");
 	private static final ResourceLocation redLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_red.png");
 	private static final ResourceLocation greenLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_green.png");
-
-	public RenderInserterBeam(Color color) {
-		super();
-		this.color = color;
-	}
 
 	/* Thanks to McJty for the rendering logic (from Deep Resonance and McJtyLib)
 	 * @see https://github.com/McJty/DeepResonance/blob/master/src/main/java/mcjty/deepresonance/blocks/laser/LaserRenderer.java
 	 * @see https://github.com/McJty/McJtyLib/blob/1.10/src/main/java/mcjty/lib/gui/RenderHelper.java
 	 */
 	@Override
-	public void renderTileEntityAt(TileEntityInserter tei, double x, double y, double z, float partialTick, int destroyStage) {
+	public void renderTileEntityAt(TileEntityBeamNetwork tebn, double x, double y, double z, float partialTick, int destroyStage) {
 
-		if(!tei.justTransferred) return;
+		NetworkInserter ins = tebn.inserter;
+
+		if(ins == null || !ins.justTransferred) return;
 
 		Tessellator tessellator = Tessellator.getInstance();
 
@@ -53,11 +46,10 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 		GlStateManager.enableDepth();
 		GL11.glDepthMask(false);
 		GL11.glPushMatrix();
-		switch (color) {
-		case BLUE: this.bindTexture(blueLaser); break;
-		case RED: this.bindTexture(redLaser); break;
-		case GREEN: this.bindTexture(greenLaser); break;
-		}
+
+		if(ins instanceof NetworkGenerator) this.bindTexture(redLaser);
+		if(ins instanceof NetworkFluidInserter) this.bindTexture(greenLaser);
+		if(ins instanceof NetworkItemInserter) this.bindTexture(blueLaser);
 
 		EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
 		double pX = p.lastTickPosX + (p.posX - p.lastTickPosX) * partialTick;
@@ -67,9 +59,9 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityInse
 
 		Vec3d player = new Vec3d((float) pX, (float) pY + p.getEyeHeight(), (float) pZ);
 
-		for(int i = 0; i < tei.segments.size(); i+= 2) {
-			BlockPos startPos = tei.segments.get(i);
-			BlockPos endPos = tei.segments.get(i + 1);
+		for(int i = 0; i < ins.segments.size(); i+= 2) {
+			BlockPos startPos = ins.segments.get(i);
+			BlockPos endPos = ins.segments.get(i + 1);
 			Vec3d startVec = new Vec3d(startPos.getX() + 0.5f, startPos.getY() + 0.5f, startPos.getZ() + 0.5f);
 			Vec3d endVec = new Vec3d(endPos.getX() + 0.5f, endPos.getY() + 0.5f, endPos.getZ() + 0.5f);
 			drawBeam(startVec, endVec, player, 0.2f);

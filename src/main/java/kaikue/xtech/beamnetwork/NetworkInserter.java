@@ -1,4 +1,4 @@
-package kaikue.xtech.tileentities;
+package kaikue.xtech.beamnetwork;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,16 +11,13 @@ import kaikue.xtech.blocks.BlockSplitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.world.World;
 
-public abstract class TileEntityInserter extends TileEntity implements ITickable {
+public abstract class NetworkInserter {
 
 	private class Receiver {
 		BlockPos pos;
@@ -43,35 +40,35 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 	public EnumFacing facing;
 
 	//Check if the position is the correct type for inserting contents
-	abstract protected boolean isReceiverAt(BlockPos checkPos, EnumFacing face);
+	abstract protected boolean isReceiverAt(World world, BlockPos checkPos, EnumFacing face);
 
 	//Transfer contents into the TileEntity at destPos
-	abstract protected boolean transfer(BlockPos destPos, EnumFacing facing, int reduction);
+	abstract protected boolean transfer(World world, BlockPos myPos, BlockPos destPos, EnumFacing facing, int reduction);
 
-	public TileEntityInserter() {
+	public NetworkInserter() {
 		resetDestCheckCooldown();
 		resetInsertCooldown();
 	}
 
-	public TileEntityInserter(EnumFacing facing) {
+	public NetworkInserter(EnumFacing facing) {
 		this();
 		this.facing = facing;
 	}
 
-	@Override
-	public void update() {
-		if(worldObj.isRemote) return;
-		if(!shouldUpdate()) return;
+	public boolean update(World world, BlockPos pos) {
+		if(world.isRemote) return false;
+		if(!shouldUpdate(world)) return false;
 
+		boolean isChanged = false;
 		boolean foundReceiver = true;
 
 		insertCooldown--;
 		if(insertCooldown < 1) {
 			boolean transferred = false;
-			if(worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
+			if(world.isBlockIndirectlyGettingPowered(pos) == 0) {
 				for(Receiver receiver : receivers) {
-					if(isReceiverAt(receiver.pos, receiver.direction)) {
-						transferred |= transfer(receiver.pos, receiver.direction, receiver.reduction);
+					if(isReceiverAt(world, receiver.pos, receiver.direction)) {
+						transferred |= transfer(world, pos, receiver.pos, receiver.direction, receiver.reduction);
 					}
 					else {
 						foundReceiver = false;
@@ -81,20 +78,21 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 			resetInsertCooldown();
 			if(transferred != justTransferred) {
 				justTransferred = transferred;
-				updateInWorld();
+				isChanged = true;
 			}
 		}
 
 		destCheckCooldown--;
 		if(destCheckCooldown < 1 || !foundReceiver) {
-			findClosestReceivers();
+			findClosestReceivers(world, pos);
 			//if changed?
-			updateInWorld();
+			isChanged = true;
 			resetDestCheckCooldown();
 		}
+		return isChanged;
 	}
 
-	private void findClosestReceivers() {
+	private void findClosestReceivers(World world, BlockPos pos) {
 		segments = new ArrayList<BlockPos>();
 		receivers = new ArrayList<Receiver>();
 		Queue<Receiver> queue = new LinkedList<Receiver>();
@@ -110,9 +108,9 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 				checkPos.move(direction);
 
 				//don't check out of bounds
-				if(!getWorld().isBlockLoaded(checkPos)) break;
+				if(!world.isBlockLoaded(checkPos)) break;
 
-				if(isReceiverAt(checkPos, direction.getOpposite())) {
+				if(isReceiverAt(world, checkPos, direction.getOpposite())) {
 					BlockPos p = checkPos.toImmutable();
 					Receiver r = new Receiver(p, i, direction.getOpposite(), reduction);
 					receivers.add(r);
@@ -121,7 +119,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 					break; //TODO: don't do this if it's an advanced inserter (can beam through inserters)
 				}
 
-				IBlockState blockState = getWorld().getBlockState(checkPos);
+				IBlockState blockState = world.getBlockState(checkPos);
 
 				Block block = blockState.getBlock();
 				if(block instanceof BlockMirror) {
@@ -192,22 +190,12 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		insertCooldown = 10;
 	}
 
-	protected boolean shouldUpdate() {
+	protected boolean shouldUpdate(World world) {
 		//Override this if you don't want to check for update every tick
 		return true;
 	}
-	
-	private void updateInWorld() {
-		if (worldObj != null) {
-			IBlockState state = worldObj.getBlockState(getPos());
-			worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-		}
-		markDirty();
-	}
 
-	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
 		compound.setInteger("facing", facing.getIndex());
 		compound.setBoolean("justTransferred", justTransferred);
 		int[] segmentsX = new int[segments.size()];
@@ -228,9 +216,7 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		return compound;
 	}
 
-	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
 		this.facing = EnumFacing.getFront(compound.getInteger("facing"));
 		this.justTransferred = compound.getBoolean("justTransferred");
 		this.segments = new ArrayList<BlockPos>();
@@ -242,20 +228,4 @@ public abstract class TileEntityInserter extends TileEntity implements ITickable
 		}
 	}
 
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		this.writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 1, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
-	}
 }
