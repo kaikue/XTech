@@ -2,8 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "0": "xtech:blocks/mirror_parts",
-        "1": "xtech:blocks/mirror_front",
-        "2": "xtech:blocks/mirror_front",
+        "1": "xtech:blocks/splitter",
+        "2": "xtech:blocks/splitter",
         "particle": "xtech:blocks/mirror_back"
     },
     "elements": [
