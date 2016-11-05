@@ -1,7 +1,6 @@
 package kaikue.xtech.tileentities;
 
 import kaikue.xtech.Config;
-import kaikue.xtech.XTech;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -51,7 +50,6 @@ public class TileEntityFluidInserter extends TileEntityInserter implements ITick
 		
 		IFluidHandler destCap = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
 		int transferred = destCap.fill(toTransfer, true);
-		XTech.logger.info("drained " + transferred + " into " + destPos + ": reduction " + reduction);
 		sourceCap.drain(transferred, true);
 		return transferred > 0;
 	}

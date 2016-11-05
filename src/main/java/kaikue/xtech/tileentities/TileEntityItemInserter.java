@@ -1,5 +1,6 @@
 package kaikue.xtech.tileentities;
 
+import kaikue.xtech.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -47,15 +48,14 @@ public class TileEntityItemInserter extends TileEntityInserter implements ITicka
 		IItemHandler sourceHandler = source.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 
 		for(int i = 0; i < sourceHandler.getSlots(); i++) {
-			ItemStack itemToTransfer = sourceHandler.extractItem(i, 1, true);
-			if (itemToTransfer != null) {
+			ItemStack itemsToTransfer = sourceHandler.extractItem(i, Config.itemsTransfer / reduction, true);
+			if (itemsToTransfer != null) {
 				for (int j = 0; j < destHandler.getSlots(); j++) {
-					ItemStack remainder = destHandler.insertItem(j, itemToTransfer, false);
-					if(remainder != null) {
-						continue;
-					}
-					sourceHandler.extractItem(i, 1, false);
-					return true;
+					ItemStack remainder = destHandler.insertItem(j, itemsToTransfer, false);
+					int r = remainder == null ? 0 : remainder.stackSize;
+					int q = itemsToTransfer.stackSize - r;
+					sourceHandler.extractItem(i, q, false);
+					if(q > 0) return true;
 				}
 			}
 		}

@@ -15,6 +15,7 @@ public class Config {
 	public static int siliconTries = 8;
 	public static int beamDistance = 64;
 	public static int fluidTransfer = 100;
+	public static int itemsTransfer = 8;
 	
 	public static int heatGeneration = 32;
 	public static int smelterConsumption = 64;
@@ -38,6 +39,7 @@ public class Config {
 	private static void initGeneralConfig(Configuration cfg) {
 		cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
 		beamDistance = cfg.getInt("beamDistance", CATEGORY_GENERAL, beamDistance, 1, 256, "Maximum distance beams can travel");
+		itemsTransfer = cfg.getInt("itemsTransfer", CATEGORY_GENERAL, itemsTransfer, 1, 64, "Number of items to transfer per half-second");
 		fluidTransfer = cfg.getInt("fluidTransfer", CATEGORY_GENERAL, fluidTransfer, 1, 100000, "Amount of fluid (in mB) to transfer per half-second");
 	}
 
