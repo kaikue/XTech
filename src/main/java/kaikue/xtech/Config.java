@@ -16,7 +16,8 @@ public class Config {
 	public static int beamDistance = 64;
 	public static int fluidTransfer = 100;
 	public static int itemsTransfer = 8;
-	
+	public static int breakerHarvestLevel = 3;
+
 	public static int heatGeneration = 32;
 	public static int smelterConsumption = 64;
 	public static int breakerConsumption = 32;
@@ -42,6 +43,7 @@ public class Config {
 		beamDistance = cfg.getInt("beamDistance", CATEGORY_GENERAL, beamDistance, 1, 256, "Maximum distance beams can travel");
 		itemsTransfer = cfg.getInt("itemsTransfer", CATEGORY_GENERAL, itemsTransfer, 1, 64, "Number of items to transfer per half-second");
 		fluidTransfer = cfg.getInt("fluidTransfer", CATEGORY_GENERAL, fluidTransfer, 1, 100000, "Amount of fluid (in mB) to transfer per half-second");
+		breakerHarvestLevel = cfg.getInt("breakerHarvestLevel", CATEGORY_GENERAL, breakerHarvestLevel, 0, 20, "Harvest level of breaker (obsidian is 3)");
 	}
 
 	private static void initWorldGenConfig(Configuration cfg) {

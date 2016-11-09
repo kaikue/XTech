@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "xtech:blocks/breaker_side",
+    "down": "xtech:blocks/breaker_bottom",
+    "up": "xtech:blocks/breaker_top",
+    "east": "xtech:blocks/breaker_side",
+    "west": "xtech:blocks/breaker_side",
+    "north": "xtech:blocks/breaker_front",
+    "south": "xtech:blocks/breaker_side"
+  }
+}
