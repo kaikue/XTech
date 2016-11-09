@@ -1,6 +1,5 @@
 package kaikue.xtech.beamnetwork;
 
-import kaikue.xtech.XTech;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,8 +16,6 @@ public abstract class NetworkConsumer {
 	public void update(World world, BlockPos pos) {
 		if(world.isRemote) return;
 		if(world.getTotalWorldTime() % 2 == 0) return;
-
-		XTech.logger.info("receiving");
 
 		if(energy >= energyRequired) {
 			performOperation(world, pos);

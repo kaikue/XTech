@@ -3,6 +3,7 @@ package kaikue.xtech.render;
 import org.lwjgl.opengl.GL11;
 
 import kaikue.xtech.XTech;
+import kaikue.xtech.beamnetwork.NetworkBreakerInserter;
 import kaikue.xtech.beamnetwork.NetworkFluidInserter;
 import kaikue.xtech.beamnetwork.NetworkGenerator;
 import kaikue.xtech.beamnetwork.NetworkInserter;
@@ -21,9 +22,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeamNetwork> {
 
-	private static final ResourceLocation blueLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_blue.png");
 	private static final ResourceLocation redLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_red.png");
 	private static final ResourceLocation greenLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_green.png");
+	private static final ResourceLocation blueLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_blue.png");
+	private static final ResourceLocation orangeLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_orange.png");
+	private static final ResourceLocation yellowLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_yellow.png");
 
 	/* Thanks to McJty for the rendering logic (from Deep Resonance and McJtyLib)
 	 * @see https://github.com/McJty/DeepResonance/blob/master/src/main/java/mcjty/deepresonance/blocks/laser/LaserRenderer.java
@@ -47,9 +50,10 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeam
 		GL11.glDepthMask(false);
 		GL11.glPushMatrix();
 
-		if(ins instanceof NetworkGenerator) this.bindTexture(redLaser);
+		if(ins instanceof NetworkGenerator) this.bindTexture(orangeLaser);
 		if(ins instanceof NetworkFluidInserter) this.bindTexture(greenLaser);
 		if(ins instanceof NetworkItemInserter) this.bindTexture(blueLaser);
+		if(ins instanceof NetworkBreakerInserter) this.bindTexture(yellowLaser);
 
 		EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
 		double pX = p.lastTickPosX + (p.posX - p.lastTickPosX) * partialTick;

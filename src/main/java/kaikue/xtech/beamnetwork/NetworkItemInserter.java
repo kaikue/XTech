@@ -25,7 +25,7 @@ public class NetworkItemInserter extends NetworkInserter {
 		return inventoryAt(world, checkPos, face) != null;
 	}
 
-	private TileEntity inventoryAt(World world, BlockPos checkPos, EnumFacing face) {
+	private static TileEntity inventoryAt(World world, BlockPos checkPos, EnumFacing face) {
 		IBlockState blockState = world.getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
 			TileEntity tileEntity = world.getTileEntity(checkPos);

@@ -1,5 +1,6 @@
 package kaikue.xtech.tileentities;
 
+import kaikue.xtech.XTech;
 import kaikue.xtech.beamnetwork.NetworkConsumer;
 import kaikue.xtech.beamnetwork.NetworkInserter;
 import net.minecraft.block.state.IBlockState;
@@ -13,22 +14,23 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 
 	public NetworkInserter inserter;
 	public NetworkConsumer consumer;
+	public String inserterClass;
+	public String consumerClass;
+
+	public TileEntityBeamNetwork(String inserterClass, String consumerClass) {
+		super();
+		this.inserterClass = inserterClass;
+		this.consumerClass = consumerClass;
+		if(inserterClass != null) {
+			inserter = instantiateInserter(inserterClass);
+		}
+		if(consumerClass != null) {
+			consumer = instantiateConsumer(consumerClass);
+		}
+	}
 
 	public TileEntityBeamNetwork() {
-		super();
-	}
-
-	public TileEntityBeamNetwork(NetworkInserter inserter) {
-		this.inserter = inserter;
-	}
-
-	public TileEntityBeamNetwork(NetworkConsumer consumer) {
-		this.consumer = consumer;
-	}
-
-	public TileEntityBeamNetwork(NetworkInserter inserter, NetworkConsumer consumer) {
-		this.inserter = inserter;
-		this.consumer = consumer;
+		this(null, null);
 	}
 
 	@Override
@@ -54,8 +56,14 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
+		if(inserterClass != null) {
+			compound.setString("inserterClass", inserterClass);
+		}
 		if(inserter != null) {
 			compound = inserter.writeToNBT(compound);
+		}
+		if(consumerClass != null) {
+			compound.setString("consumerClass", consumerClass);
 		}
 		if(consumer != null) {
 			compound = consumer.writeToNBT(compound);
@@ -66,10 +74,14 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		if(inserter != null) {
+		inserterClass = compound.getString("inserterClass");
+		if(!inserterClass.equals("")) {
+			inserter = instantiateInserter(inserterClass);
 			inserter.readFromNBT(compound);
 		}
-		if(consumer != null) {
+		consumerClass = compound.getString("consumerClass");
+		if(!consumerClass.equals("")) {
+			consumer = instantiateConsumer(consumerClass);
 			consumer.readFromNBT(compound);
 		}
 	}
@@ -89,6 +101,28 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		readFromNBT(packet.getNbtCompound());
+	}
+
+	private NetworkInserter instantiateInserter(String className) {
+		try {
+			return (NetworkInserter) Class.forName(className).newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			XTech.logger.error("Invalid inserter class \"" + className + "\" for " + this + " at " + this.pos);
+			XTech.logger.error(e.getMessage());
+			return null;
+		}
+	}
+
+	private NetworkConsumer instantiateConsumer(String className) {
+		try {
+			return (NetworkConsumer) Class.forName(className).newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			XTech.logger.error("Invalid consumer class \"" + className + "\" for " + this + " at " + this.pos);
+			XTech.logger.error(e.getMessage());
+			return null;
+		}
 	}
 
 }

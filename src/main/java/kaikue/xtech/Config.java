@@ -19,6 +19,7 @@ public class Config {
 	
 	public static int heatGeneration = 32;
 	public static int smelterConsumption = 64;
+	public static int breakerConsumption = 32;
 
 	public static void readConfig() {
 		Configuration cfg = CommonProxy.config;
@@ -54,5 +55,6 @@ public class Config {
 		cfg.addCustomCategoryComment(CATEGORY_POWER, "Power generation and consumption rates");
 		heatGeneration = cfg.getInt("heatGeneration", CATEGORY_POWER, heatGeneration, 0, 1024, "Power produced by the heated generator");
 		smelterConsumption = cfg.getInt("smelterConsumption", CATEGORY_POWER, smelterConsumption, 0, 1024, "Power consumed by the smelter");
+		breakerConsumption = cfg.getInt("breakerConsumption", CATEGORY_POWER, breakerConsumption, 0, 1024, "Power consumed by the breaker");
 	}
 }

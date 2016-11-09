@@ -1,6 +1,5 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.beamnetwork.NetworkItemInserter;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -23,7 +22,9 @@ public class BlockItemInserter extends BlockInserter implements ITileEntityProvi
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityBeamNetwork(new NetworkItemInserter(EnumFacing.getFront(meta)));
+		TileEntityBeamNetwork tebn = new TileEntityBeamNetwork("kaikue.xtech.beamnetwork.NetworkItemInserter", null);
+		tebn.inserter.facing = EnumFacing.getFront(meta);
+		return tebn;
 	}
 
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public abstract class NetworkInserter {
 
-	private class Receiver {
+	public class Receiver {
 		BlockPos pos;
 		int distance;
 		EnumFacing direction;
@@ -32,7 +32,7 @@ public abstract class NetworkInserter {
 		}
 	}
 
-	private List<Receiver> receivers = new ArrayList<Receiver>();
+	public List<Receiver> receivers = new ArrayList<Receiver>();
 	public boolean justTransferred;
 	public ArrayList<BlockPos> segments = new ArrayList<BlockPos>();
 	protected int destCheckCooldown;

@@ -7,6 +7,7 @@ tile.xtech.iteminserter.name=Item Transpositor
 tile.xtech.fluidinserter.name=Fluid Transpositor
 tile.xtech.heatgenerator.name=Heated Generator
 tile.xtech.smelterconsumer.name=Smelter
+tile.xtech.breakerconsumer.name=Breaker
 
 item.xtech.lasercore.name=Laser Core
 item.xtech.silicon.name=Silicon

@@ -1,6 +1,5 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.beamnetwork.NetworkHeatGenerator;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,6 +15,8 @@ public class BlockHeatGenerator extends BlockGenerator {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityBeamNetwork(new NetworkHeatGenerator(EnumFacing.getFront(meta)));
+		TileEntityBeamNetwork tebn = new TileEntityBeamNetwork("kaikue.xtech.beamnetwork.NetworkHeatGenerator", null);
+		tebn.inserter.facing = EnumFacing.getFront(meta);
+		return tebn;
 	}
 }

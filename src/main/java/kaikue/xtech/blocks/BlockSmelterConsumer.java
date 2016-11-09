@@ -1,6 +1,5 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.beamnetwork.NetworkSmelterConsumer;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,6 +14,6 @@ public class BlockSmelterConsumer extends BlockConsumer {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityBeamNetwork(new NetworkSmelterConsumer());
+		return new TileEntityBeamNetwork(null, "kaikue.xtech.beamnetwork.NetworkSmelterConsumer");
 	}
 }

@@ -25,7 +25,7 @@ public class NetworkFluidInserter extends NetworkInserter {
 		return tankAt(world, checkPos, face) != null;
 	}
 
-	private TileEntity tankAt(World world, BlockPos checkPos, EnumFacing face) {
+	private static TileEntity tankAt(World world, BlockPos checkPos, EnumFacing face) {
 		IBlockState blockState = world.getBlockState(checkPos);
 		if(blockState.getBlock().hasTileEntity(blockState)) {
 			TileEntity tileEntity = world.getTileEntity(checkPos);

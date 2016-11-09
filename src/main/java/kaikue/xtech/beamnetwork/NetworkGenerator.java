@@ -50,10 +50,10 @@ public abstract class NetworkGenerator extends NetworkInserter {
 
 	@Override
 	protected boolean transfer(World world, BlockPos myPos, BlockPos destPos, EnumFacing face, int reduction) {
+		XTech.logger.info("generating");
 		NetworkConsumer dest = consumerAt(world, destPos, face);
 		if(dest == null) return false;
 
-		XTech.logger.info("generating");
 		dest.addEnergy(energyGenerated / reduction);
 		return true;
 	}
