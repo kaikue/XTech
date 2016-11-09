@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 
 public class NetworkBreakerConsumer extends NetworkConsumer {
 
-	public boolean breaking;
-
 	public NetworkBreakerConsumer() {
 		super(Config.breakerConsumption);
 	}
@@ -34,13 +32,11 @@ public class NetworkBreakerConsumer extends NetworkConsumer {
 
 	@Override
 	protected void performOperation(World world, BlockPos pos) {
-		breaking = false;
 		NetworkBreakerInserter inserter = breakerInserterAt(world, pos);
 		List<Receiver> targets = inserter.receivers;
 		for(int i = 0; i < targets.size(); i++) {
 			BlockPos target = targets.get(i).pos;
 			world.destroyBlock(target, true); //TODO: make this pop out the back
-			breaking = true;
 		}
 	}
 

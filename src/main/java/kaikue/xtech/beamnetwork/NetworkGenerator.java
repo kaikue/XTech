@@ -1,6 +1,5 @@
 package kaikue.xtech.beamnetwork;
 
-import kaikue.xtech.XTech;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +49,6 @@ public abstract class NetworkGenerator extends NetworkInserter {
 
 	@Override
 	protected boolean transfer(World world, BlockPos myPos, BlockPos destPos, EnumFacing face, int reduction) {
-		XTech.logger.info("generating");
 		NetworkConsumer dest = consumerAt(world, destPos, face);
 		if(dest == null) return false;
 

@@ -62,6 +62,14 @@ public abstract class NetworkInserter {
 		boolean isChanged = false;
 		boolean foundReceiver = true;
 
+		destCheckCooldown--;
+		if(destCheckCooldown < 1 || !foundReceiver) {
+			findClosestReceivers(world, pos);
+			//if changed?
+			isChanged = true;
+			resetDestCheckCooldown();
+		}
+
 		insertCooldown--;
 		if(insertCooldown < 1) {
 			boolean transferred = false;
@@ -82,13 +90,6 @@ public abstract class NetworkInserter {
 			}
 		}
 
-		destCheckCooldown--;
-		if(destCheckCooldown < 1 || !foundReceiver) {
-			findClosestReceivers(world, pos);
-			//if changed?
-			isChanged = true;
-			resetDestCheckCooldown();
-		}
 		return isChanged;
 	}
 
@@ -116,7 +117,7 @@ public abstract class NetworkInserter {
 					receivers.add(r);
 					segments.add(segmentStart);
 					segments.add(p);
-					break; //TODO: don't do this if it's an advanced inserter (can beam through inserters)
+					break; //TODO: don't do this if it's an advanced inserter (can beam through receivers)
 				}
 
 				IBlockState blockState = world.getBlockState(checkPos);
