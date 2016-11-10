@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 
-public class DirectionalBaseBlock extends BaseBlock {
+public abstract class DirectionalBaseBlock extends BaseBlock {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
