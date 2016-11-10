@@ -1,6 +1,7 @@
 package kaikue.xtech.beamnetwork;
 
 import kaikue.xtech.Config;
+import kaikue.xtech.blocks.BlockMirror;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -22,8 +23,9 @@ public class NetworkBreakerInserter extends NetworkInserter {
 		IBlockState blockState = world.getBlockState(checkPos);
 		Block block = blockState.getBlock();
 		boolean isNotAir = !block.isAir(blockState, world, checkPos);
+		boolean isNotMirror = !(block instanceof BlockMirror);
 		boolean canMine = block.getHarvestLevel(blockState) <= Config.breakerHarvestLevel;
-		return isNotAir && canMine;
+		return isNotAir && isNotMirror && canMine;
 	}
 
 	@Override
