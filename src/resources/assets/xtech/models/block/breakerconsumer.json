@@ -3,10 +3,10 @@
   "textures": {
     "particle": "xtech:blocks/breaker_side",
     "down": "xtech:blocks/breaker_bottom",
-    "up": "xtech:blocks/breaker_top",
+    "up": "xtech:blocks/breaker_front",
     "east": "xtech:blocks/breaker_side",
     "west": "xtech:blocks/breaker_side",
-    "north": "xtech:blocks/breaker_front",
+    "north": "xtech:blocks/breaker_side",
     "south": "xtech:blocks/breaker_side"
   }
 }
