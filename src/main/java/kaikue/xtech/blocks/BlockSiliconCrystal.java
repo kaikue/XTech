@@ -46,7 +46,12 @@ public class BlockSiliconCrystal extends BaseBlock {
 
 	@Override
 	public int quantityDroppedWithBonus(int fortune, Random random) {
-		return random.nextInt(fortune * 2) + quantityDropped(random);
+		if(fortune < 0) {
+			return random.nextInt(fortune * 2) + quantityDropped(random);
+		}
+		else {
+			return quantityDropped(random);
+		}
 	}
 
 	@Override
