@@ -17,7 +17,7 @@ public abstract class NetworkConsumer {
 		if(world.isRemote) return;
 		if(world.getTotalWorldTime() % 2 == 0) return;
 
-		if(energy >= energyRequired) {
+		if(hasEnoughPower()) {
 			performOperation(world, pos);
 		}
 
@@ -26,6 +26,10 @@ public abstract class NetworkConsumer {
 
 	public void addEnergy(int e) {
 		energy += e;
+	}
+
+	public boolean hasEnoughPower() {
+		return energy >= energyRequired;
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
