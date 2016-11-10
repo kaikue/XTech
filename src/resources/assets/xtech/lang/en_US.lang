@@ -11,3 +11,11 @@ tile.xtech.breakerconsumer.name=Breaker
 
 item.xtech.lasercore.name=Laser Core
 item.xtech.silicon.name=Silicon
+
+tooltip.xtech.mirror=Changes the direction of beams
+tooltip.xtech.splitter=Splits beams in two
+tooltip.xtech.smelter=Uses beam power to smelt items
+tooltip.xtech.heatgen=Generates beam power from burnable items
+tooltip.xtech.breaker=Breaks blocks using beam power
+tooltip.xtech.fluidinserter=Transfers fluids into remote tanks
+tooltip.xtech.iteminserter=Transfers items into remote inventories

@@ -9,6 +9,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -29,7 +30,7 @@ public class BlockMirror extends BaseBlock {
 	private static final AxisAlignedBB MIRROR_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
 	public BlockMirror() {
-		super("mirror", "Changes the direction of beams", Material.GLASS, 0.3f, SoundType.GLASS);
+		super("mirror", I18n.format("tooltip.xtech.mirror"), Material.GLASS, 0.3f, SoundType.GLASS);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH));
 	}
 

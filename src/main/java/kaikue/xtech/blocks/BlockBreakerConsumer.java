@@ -3,6 +3,7 @@ package kaikue.xtech.blocks;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 public class BlockBreakerConsumer extends BlockGenerator {
 
 	public BlockBreakerConsumer() {
-		super("breakerconsumer", "Breaks blocks using beam power", Material.IRON, 3.0F, SoundType.METAL);
+		super("breakerconsumer", I18n.format("tooltip.xtech.breaker"), Material.IRON, 3.0F, SoundType.METAL);
 	}
 
 	@Override
