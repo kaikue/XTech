@@ -42,6 +42,17 @@ public class ModRecipes {
 				);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(
+				new ItemStack(ModBlocks.blockJoiner),
+				"GGG",
+				"GIG",
+				" S ",
+				'S', "itemSilicon",
+				'I', "ingotIron",
+				'G', "blockGlass"
+				)
+				);
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(
 				new ItemStack(ModBlocks.blockItemInserter),
 				"II ",
 				"RSL",
