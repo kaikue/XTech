@@ -8,6 +8,7 @@ import kaikue.xtech.blocks.BlockBreakerConsumer;
 import kaikue.xtech.blocks.BlockFluidInserter;
 import kaikue.xtech.blocks.BlockHeatGenerator;
 import kaikue.xtech.blocks.BlockItemInserter;
+import kaikue.xtech.blocks.BlockJoiner;
 import kaikue.xtech.blocks.BlockMirror;
 import kaikue.xtech.blocks.BlockSiliconCrystal;
 import kaikue.xtech.blocks.BlockSmelterConsumer;
@@ -22,6 +23,7 @@ public class ModBlocks {
 	public static BlockSiliconCrystal blockSiliconCrystal;
 	public static BlockMirror blockMirror;
 	public static BlockSplitter blockSplitter;
+	public static BlockJoiner blockJoiner;
 	public static BlockItemInserter blockItemInserter;
 	public static BlockFluidInserter blockFluidInserter;
 	public static BlockHeatGenerator blockHeatGenerator;
@@ -34,6 +36,7 @@ public class ModBlocks {
 				blockSiliconCrystal = new BlockSiliconCrystal(),
 				blockMirror = new BlockMirror(),
 				blockSplitter = new BlockSplitter(),
+				blockJoiner = new BlockJoiner(),
 				blockItemInserter = new BlockItemInserter(),
 				blockFluidInserter = new BlockFluidInserter(),
 				blockHeatGenerator = new BlockHeatGenerator(),

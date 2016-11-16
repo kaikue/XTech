@@ -3,6 +3,7 @@ itemGroup.XTech=XTech
 tile.xtech.siliconcrystal.name=Silicon Crystal
 tile.xtech.mirror.name=Mirror
 tile.xtech.splitter.name=Splitter
+tile.xtech.joiner.name=Joiner
 tile.xtech.iteminserter.name=Item Transpositor
 tile.xtech.fluidinserter.name=Fluid Transpositor
 tile.xtech.heatgenerator.name=Heated Generator
@@ -14,6 +15,7 @@ item.xtech.silicon.name=Silicon
 
 tooltip.xtech.mirror=Changes the direction of beams
 tooltip.xtech.splitter=Splits beams in two
+tooltip.xtech.joiner=Combines beams from different directions
 tooltip.xtech.smelter=Uses beam power to smelt items
 tooltip.xtech.heatgen=Generates beam power from burnable items
 tooltip.xtech.breaker=Breaks blocks using beam power

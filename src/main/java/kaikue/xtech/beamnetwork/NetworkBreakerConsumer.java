@@ -48,14 +48,15 @@ public class NetworkBreakerConsumer extends NetworkConsumer {
 			world.destroyBlock(target, true);
 			AxisAlignedBB aabb = new AxisAlignedBB(target);
 			List<EntityItem> drops = world.getEntitiesWithinAABB(EntityItem.class, aabb);
-			for(EntityItem drop : drops) {
-				drop.setVelocity(0, 0, 0);
-				drop.setPosition(behind.getX() + 0.5, behind.getY() + 0.5, behind.getZ() + 0.5);
-				ItemStack stack = drop.getEntityItem();
-				//try to insert stack into an adjacent inventory (first behind, then to the sides?)
-				TileEntity dest = NetworkItemInserter.inventoryAt(world, behind, facing);
-				if(dest != null) {
-					IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+			//for BlockPos invPos in {behind, up, down, left, right}:
+			TileEntity dest = NetworkItemInserter.inventoryAt(world, behind, facing);
+			if(dest != null) {
+				IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+				for(EntityItem drop : drops) {
+					drop.setVelocity(0, 0, 0);
+					drop.setPosition(behind.getX() + 0.5, behind.getY() + 0.5, behind.getZ() + 0.5);
+					//update drop on client somehow?
+					ItemStack stack = drop.getEntityItem();
 					for (int j = 0; j < destHandler.getSlots(); j++) {
 						ItemStack remainder = destHandler.insertItem(j, stack, false);
 						drop.setEntityItemStack(remainder);

@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Queue;
 
 import kaikue.xtech.Config;
+import kaikue.xtech.blocks.BlockJoiner;
 import kaikue.xtech.blocks.BlockMirror;
 import kaikue.xtech.blocks.BlockSplitter;
+import kaikue.xtech.blocks.DirectionalBaseBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -141,6 +143,13 @@ public abstract class NetworkInserter {
 						queue.add(state);
 					}
 					direction = newDirection;
+					segments.add(segmentStart);
+					segments.add(p);
+					segmentStart = p;
+				}
+				else if(block instanceof BlockJoiner) {
+					BlockPos p = checkPos.toImmutable();
+					direction = blockState.getValue(DirectionalBaseBlock.FACING);
 					segments.add(segmentStart);
 					segments.add(p);
 					segmentStart = p;
