@@ -13,6 +13,9 @@ tile.xtech.breakerconsumer.name=Breaker
 item.xtech.lasercore.name=Laser Core
 item.xtech.silicon.name=Silicon
 
+tooltip.xtech.consumption=Requires
+tooltip.xtech.generation=Produces
+tooltip.xtech.units=BP
 tooltip.xtech.mirror=Changes the direction of beams
 tooltip.xtech.splitter=Splits beams in two
 tooltip.xtech.joiner=Combines beams from different directions

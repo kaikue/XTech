@@ -1,5 +1,7 @@
 package kaikue.xtech.blocks;
 
+import java.util.Arrays;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +22,7 @@ public abstract class BlockInserter extends DirectionalBaseBlock {
 	private static final AxisAlignedBB INSERTER_WEST_AABB = new AxisAlignedBB(0.5D, 0.25D, 0.25D, 1.0D, 0.75D, 0.75D);
 
 	public BlockInserter(String name, String description, Material material, float hardness, SoundType sound) {
-		super(name, description, material, hardness, sound);
+		super(name, Arrays.asList(description), material, hardness, sound);
 	}
 
 	@Override

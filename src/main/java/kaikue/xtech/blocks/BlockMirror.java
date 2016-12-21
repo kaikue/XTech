@@ -1,5 +1,7 @@
 package kaikue.xtech.blocks;
 
+import java.util.Arrays;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -29,13 +31,13 @@ public class BlockMirror extends BaseBlock {
 			PropertyEnum.<EnumOrientation>create("facing", EnumOrientation.class);
 	private static final AxisAlignedBB MIRROR_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
-	public BlockMirror() {
-		super("mirror", I18n.format("tooltip.xtech.mirror"), Material.GLASS, 0.3f, SoundType.GLASS);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH));
+	public BlockMirror(String name, String description, Material material, float hardness, SoundType sound) {
+		super(name, Arrays.asList(description), material, hardness, sound);
 	}
 
-	public BlockMirror(String name, String description, Material material, float hardness, SoundType sound) {
-		super(name, description, material, hardness, sound);
+	public BlockMirror() {
+		this("mirror", I18n.format("tooltip.xtech.mirror"), Material.GLASS, 0.3f, SoundType.GLASS);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH));
 	}
 
 	@Override

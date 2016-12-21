@@ -1,5 +1,7 @@
 package kaikue.xtech.blocks;
 
+import java.util.Arrays;
+
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,7 +22,7 @@ public class BlockJoiner extends DirectionalBaseBlock {
 	private static final AxisAlignedBB JOINER_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
 	public BlockJoiner() {
-		super("joiner", I18n.format("tooltip.xtech.joiner"), Material.GLASS, 0.3f, SoundType.GLASS);
+		super("joiner", Arrays.asList(I18n.format("tooltip.xtech.joiner")), Material.GLASS, 0.3f, SoundType.GLASS);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 	

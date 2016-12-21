@@ -1,5 +1,7 @@
 package kaikue.xtech.blocks;
 
+import java.util.List;
+
 import kaikue.xtech.ModMisc;
 import kaikue.xtech.XTech;
 import net.minecraft.block.Block;
@@ -17,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BaseBlock extends Block {
 
-	public BaseBlock(String name, String description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
+	public BaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
 		super(material);
 		setUnlocalizedName(XTech.MODID + "." + name);
 		setHardness(hardness);
@@ -35,7 +37,7 @@ public abstract class BaseBlock extends Block {
 		this(name, null, material, hardness, sound, addToCreativeTab);
 	}
 
-	public BaseBlock(String name, String description, Material material, float hardness, SoundType sound) {
+	public BaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound) {
 		this(name, description, material, hardness, sound, true);
 	}
 
@@ -43,15 +45,16 @@ public abstract class BaseBlock extends Block {
 		this(name, null, material, hardness, sound, true);
 	}
 
-	private ItemBlock getItemBlock(final String description) {
+	private ItemBlock getItemBlock(final List<String> description) {
 		if(description == null) return new ItemBlock(this);
 
 		return new ItemBlock(this) {
 			@SideOnly(Side.CLIENT)
 			@Override
-			public void addInformation(ItemStack stack, EntityPlayer player, java.util.List<String> info, boolean advanced) 
-			{
-				info.add(description);
+			public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced) {
+				for(String line : description) {
+					info.add(line);
+				}
 			}
 		};
 	}

@@ -1,5 +1,7 @@
 package kaikue.xtech.blocks;
 
+import java.util.List;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -14,7 +16,7 @@ public abstract class DirectionalBaseBlock extends BaseBlock {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-	public DirectionalBaseBlock(String name, String description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
+	public DirectionalBaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
 		super(name, description, material, hardness, sound, addToCreativeTab);
 	}
 
@@ -22,7 +24,7 @@ public abstract class DirectionalBaseBlock extends BaseBlock {
 		super(name, material, hardness, sound, addToCreativeTab);
 	}
 
-	public DirectionalBaseBlock(String name, String description, Material material, float hardness, SoundType sound) {
+	public DirectionalBaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound) {
 		super(name, description, material, hardness, sound);
 	}
 
