@@ -1,5 +1,6 @@
 package kaikue.xtech.beamnetwork;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kaikue.xtech.Config;
@@ -41,6 +42,10 @@ public class NetworkBreakerConsumer extends NetworkConsumer {
 	protected void performOperation(World world, BlockPos pos) {
 		EnumFacing facing = world.getBlockState(pos).getValue(BlockBreakerConsumer.FACING);
 		BlockPos behind = pos.offset(facing.getOpposite());
+		List<EnumFacing> facings = new ArrayList<EnumFacing>();
+		for(EnumFacing f : EnumFacing.values()) {
+			if(f != facing) facings.add(f);
+		}
 		NetworkBreakerInserter inserter = breakerInserterAt(world, pos);
 		List<Receiver> targets = inserter.receivers;
 		for(int i = 0; i < targets.size(); i++) {
@@ -48,21 +53,26 @@ public class NetworkBreakerConsumer extends NetworkConsumer {
 			world.destroyBlock(target, true);
 			AxisAlignedBB aabb = new AxisAlignedBB(target);
 			List<EntityItem> drops = world.getEntitiesWithinAABB(EntityItem.class, aabb);
-			//for BlockPos invPos in {behind, up, down, left, right}:
-			TileEntity dest = NetworkItemInserter.inventoryAt(world, behind, facing);
-			if(dest != null) {
-				IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-				for(EntityItem drop : drops) {
-					drop.setVelocity(0, 0, 0);
-					drop.setPosition(behind.getX() + 0.5, behind.getY() + 0.5, behind.getZ() + 0.5);
-					//update drop on client somehow?
-					ItemStack stack = drop.getEntityItem();
-					for (int j = 0; j < destHandler.getSlots(); j++) {
-						ItemStack remainder = destHandler.insertItem(j, stack, false);
-						drop.setEntityItemStack(remainder);
-						if(remainder == null || remainder.stackSize == 0) {
-							drop.setDead();
-							break;
+			for(EntityItem drop : drops) {
+				drop.setVelocity(0, 0, 0);
+				drop.setPosition(behind.getX() + 0.5, behind.getY() + 0.5, behind.getZ() + 0.5);
+				//update drop on client somehow?
+			}
+			for(EnumFacing face : facings) {
+				EnumFacing invFace = face.getOpposite();
+				BlockPos sidePos = pos.offset(face.getOpposite());
+				TileEntity dest = NetworkItemInserter.inventoryAt(world, sidePos, invFace);
+				if(dest != null) {
+					IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invFace);
+					for(EntityItem drop : drops) {
+						ItemStack stack = drop.getEntityItem();
+						for (int j = 0; j < destHandler.getSlots(); j++) {
+							ItemStack remainder = destHandler.insertItem(j, stack, false);
+							drop.setEntityItemStack(remainder);
+							if(remainder == null || remainder.stackSize == 0) {
+								drop.setDead();
+								break;
+							}
 						}
 					}
 				}
