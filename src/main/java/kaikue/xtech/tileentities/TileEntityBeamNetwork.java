@@ -36,19 +36,19 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if(inserter != null) {
-			if(inserter.update(worldObj, pos)) {
+			if(inserter.update(getWorld(), pos)) {
 				updateInWorld();
 			}
 		}
 		if(consumer != null) {
-			consumer.update(worldObj, pos);
+			consumer.update(getWorld(), pos);
 		}
 	}
 
 	private void updateInWorld() {
-		if (worldObj != null) {
-			IBlockState state = worldObj.getBlockState(getPos());
-			worldObj.notifyBlockUpdate(getPos(), state, state, 3);
+		if (getWorld() != null) {
+			IBlockState state = getWorld().getBlockState(getPos());
+			getWorld().notifyBlockUpdate(getPos(), state, state, 3);
 		}
 		markDirty();
 	}
