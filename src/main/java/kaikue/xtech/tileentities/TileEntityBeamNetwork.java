@@ -4,11 +4,16 @@ import kaikue.xtech.XTech;
 import kaikue.xtech.beamnetwork.NetworkConsumer;
 import kaikue.xtech.beamnetwork.NetworkInserter;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 
@@ -16,8 +21,9 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 	public NetworkConsumer consumer;
 	public String inserterClass;
 	public String consumerClass;
+	public ItemStackHandler itemStackHandler;
 
-	public TileEntityBeamNetwork(String inserterClass, String consumerClass) {
+	public TileEntityBeamNetwork(String inserterClass, String consumerClass, int invSlots) {
 		super();
 		this.inserterClass = inserterClass;
 		this.consumerClass = consumerClass;
@@ -27,6 +33,19 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 		if(consumerClass != null) {
 			consumer = instantiateConsumer(consumerClass);
 		}
+
+		if(invSlots > 0) {
+			itemStackHandler = new ItemStackHandler(invSlots) {
+				@Override
+				protected void onContentsChanged(int slot) {
+					TileEntityBeamNetwork.this.markDirty();
+				}
+			};
+		}
+	}
+
+	public TileEntityBeamNetwork(String inserterClass, String consumerClass) {
+		this(inserterClass, consumerClass, 0);
 	}
 
 	public TileEntityBeamNetwork() {
@@ -68,6 +87,9 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 		if(consumer != null) {
 			compound = consumer.writeToNBT(compound);
 		}
+		if(itemStackHandler != null) {
+			compound.setTag("items", itemStackHandler.serializeNBT());
+		}
 		return compound;
 	}
 
@@ -83,6 +105,9 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 		if(!consumerClass.equals("")) {
 			consumer = instantiateConsumer(consumerClass);
 			consumer.readFromNBT(compound);
+		}
+		if(compound.hasKey("items") && itemStackHandler != null) {
+			itemStackHandler.deserializeNBT((NBTTagCompound)compound.getTag("items"));
 		}
 	}
 
@@ -123,6 +148,27 @@ public class TileEntityBeamNetwork extends TileEntity implements ITickable {
 			XTech.logger.error(e.getMessage());
 			return null;
 		}
+	}
+
+	public boolean canInteractWith(EntityPlayer playerIn) {
+		return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return itemStackHandler != null;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) itemStackHandler;
+		}
+		return super.getCapability(capability, facing);
 	}
 
 }
