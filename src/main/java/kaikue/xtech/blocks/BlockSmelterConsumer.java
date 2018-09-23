@@ -1,6 +1,6 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import kaikue.xtech.XTech;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.SoundType;
@@ -19,7 +19,7 @@ public class BlockSmelterConsumer extends BlockConsumer {
 	public static final int GUI_ID = 1;
 
 	public BlockSmelterConsumer() {
-		super("smelterconsumer", I18n.format("tooltip.xtech.smelter"), Config.smelterConsumption, Material.IRON, 3.0F, SoundType.METAL);
+		super("smelterconsumer", I18n.format("tooltip.xtech.smelter"), XTechConfig.power.smelterConsumption, Material.IRON, 3.0F, SoundType.METAL);
 	}
 
 	@Override

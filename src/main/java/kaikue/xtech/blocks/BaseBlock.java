@@ -21,17 +21,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BaseBlock extends Block {
 
 	public ItemBlock itemBlock;
-	
-	private List<String> description;
-	
+
 	public BaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
 		super(material);
 		setUnlocalizedName(XTech.MODID + "." + name);
 		setHardness(hardness);
 		setSoundType(sound);
 		setRegistryName(name);
-		this.description = description;
-		itemBlock = createItemBlock();
+		itemBlock = createItemBlock(description);
 		if(addToCreativeTab) {
 			setCreativeTab(ModMisc.creativeTab);
 		}
@@ -49,7 +46,7 @@ public abstract class BaseBlock extends Block {
 		this(name, null, material, hardness, sound, true);
 	}
 
-	private ItemBlock createItemBlock() {
+	private ItemBlock createItemBlock(List<String> description) {
 		if(description == null) return new ItemBlock(this);
 
 		return new ItemBlock(this) {
@@ -62,7 +59,7 @@ public abstract class BaseBlock extends Block {
 			}
 		};
 	}
-	
+
 	public void initModel() {
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}

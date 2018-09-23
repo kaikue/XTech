@@ -1,16 +1,16 @@
 package kaikue.xtech.beamnetwork;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import net.minecraft.util.EnumFacing;
 
 public class NetworkHeatGenerator extends NetworkGenerator {
 
 	public NetworkHeatGenerator() {
-		super(Config.heatGeneration);
+		super(XTechConfig.power.heatGeneration);
 	}
 
 	public NetworkHeatGenerator(EnumFacing facing) {
-		super(Config.heatGeneration, facing);
+		super(XTechConfig.power.heatGeneration, facing);
 	}
 
 }

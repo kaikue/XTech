@@ -3,7 +3,7 @@
   "modid": "xtech",
   "name": "XTech",
   "description": "A tech mod, with lasers!",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

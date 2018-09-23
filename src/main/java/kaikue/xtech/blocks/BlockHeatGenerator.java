@@ -1,6 +1,6 @@
 package kaikue.xtech.blocks;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class BlockHeatGenerator extends BlockGenerator {
 
 	public BlockHeatGenerator() {
-		super("heatgenerator", I18n.format("tooltip.xtech.heatgen"), Config.heatGeneration, Material.IRON, 3.0F, SoundType.METAL);
+		super("heatgenerator", I18n.format("tooltip.xtech.heatgen"), XTechConfig.power.heatGeneration, Material.IRON, 3.0F, SoundType.METAL);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package kaikue.xtech.beamnetwork;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +48,7 @@ public class NetworkItemInserter extends NetworkInserter {
 		IItemHandler sourceHandler = source.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 
 		for(int i = 0; i < sourceHandler.getSlots(); i++) {
-			ItemStack itemsToTransfer = sourceHandler.extractItem(i, Config.itemsTransfer / reduction, true);
+			ItemStack itemsToTransfer = sourceHandler.extractItem(i, XTechConfig.general.itemsTransfer / reduction, true);
 			if (itemsToTransfer != null) {
 				for (int j = 0; j < destHandler.getSlots(); j++) {
 					ItemStack remainder = destHandler.insertItem(j, itemsToTransfer, false);

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import kaikue.xtech.blocks.BlockJoiner;
 import kaikue.xtech.blocks.BlockMirror;
 import kaikue.xtech.blocks.BlockSplitter;
@@ -107,7 +107,7 @@ public abstract class NetworkInserter {
 			EnumFacing direction = current.direction;
 			int reduction = current.reduction;
 			BlockPos segmentStart = current.pos;
-			for(int i = current.distance; i < Config.beamDistance; i++) {
+			for(int i = current.distance; i < XTechConfig.general.beamDistance; i++) {
 				checkPos.move(direction);
 
 				//don't check out of bounds

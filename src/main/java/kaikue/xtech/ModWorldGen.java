@@ -16,9 +16,9 @@ public class ModWorldGen implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
 		if(world.provider.getDimension() != 0) return;
-		if(!Config.generateSilicon || random.nextInt(Config.siliconChance) != 0) return;
+		if(!XTechConfig.worldGen.generateSilicon || random.nextInt(XTechConfig.worldGen.siliconChance) != 0) return;
 
-		for(int i = 0; i < Config.siliconTries; i++) {
+		for(int i = 0; i < XTechConfig.worldGen.siliconTries; i++) {
 			int x = chunkX * 16 + random.nextInt(16);
 			int z = chunkZ * 16 + random.nextInt(16);
 			int y = 1;

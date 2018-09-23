@@ -7,15 +7,12 @@ import kaikue.xtech.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = XTech.MODID, name = XTech.MODNAME, version = XTech.VERSION, dependencies = "required-after:forge@[14.23.4.2759,)")
+@Mod(modid = XTech.MODID, dependencies = "required-after:forge@[14.23.4.2759,)", useMetadata = true)
 public class XTech {
 
 	public static final String MODID = "xtech";
-	public static final String MODNAME = "XTech";
-	public static final String VERSION = "0.1.0";
 
 	public static final Logger logger = LogManager.getLogger(XTech.MODID);
 
@@ -33,11 +30,6 @@ public class XTech {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent e) {
 		proxy.init(e);
-	}
-
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent e) {
-		proxy.postInit(e);
 	}
 
 }

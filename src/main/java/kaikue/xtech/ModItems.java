@@ -22,7 +22,7 @@ public class ModItems {
 				));
 
 	}
-	
+
 	public static void initModels() {
 		for(BaseItem item : items) {
 			item.initModel();

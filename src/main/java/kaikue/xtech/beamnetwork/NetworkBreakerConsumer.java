@@ -3,7 +3,7 @@ package kaikue.xtech.beamnetwork;
 import java.util.ArrayList;
 import java.util.List;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import kaikue.xtech.beamnetwork.NetworkInserter.Receiver;
 import kaikue.xtech.blocks.BlockBreakerConsumer;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
@@ -21,7 +21,7 @@ import net.minecraftforge.items.IItemHandler;
 public class NetworkBreakerConsumer extends NetworkConsumer {
 
 	public NetworkBreakerConsumer() {
-		super(Config.breakerConsumption);
+		super(XTechConfig.power.breakerConsumption);
 	}
 
 	private static NetworkBreakerInserter breakerInserterAt(World world, BlockPos checkPos) {

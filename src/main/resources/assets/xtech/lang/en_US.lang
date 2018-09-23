@@ -1,5 +1,9 @@
 itemGroup.xtech=XTech
 
+xtech.general.tooltip=General configuration
+xtech.power.tooltip=Power generation and consumption rates
+xtech.worldgen.tooltip=World generation options
+
 tile.xtech.siliconcrystal.name=Silicon Crystal
 tile.xtech.mirror.name=Mirror
 tile.xtech.splitter.name=Splitter

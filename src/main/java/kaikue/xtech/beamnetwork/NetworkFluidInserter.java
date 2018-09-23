@@ -1,6 +1,6 @@
 package kaikue.xtech.beamnetwork;
 
-import kaikue.xtech.Config;
+import kaikue.xtech.XTechConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -45,7 +45,7 @@ public class NetworkFluidInserter extends NetworkInserter {
 		if(source == null) return false;
 		
 		IFluidHandler sourceCap = source.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-		FluidStack toTransfer = sourceCap.drain(Config.fluidTransfer / reduction, false);
+		FluidStack toTransfer = sourceCap.drain(XTechConfig.general.fluidTransfer / reduction, false);
 		if(toTransfer == null || toTransfer.amount == 0) return false;
 		
 		IFluidHandler destCap = dest.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, face);
