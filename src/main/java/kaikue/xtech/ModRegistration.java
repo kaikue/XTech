@@ -43,6 +43,5 @@ public class ModRegistration {
 
 		ModItems.initModels();
 		ModBlocks.initModels();
-		//ModRendering.registerTESRs();
 	}
 }

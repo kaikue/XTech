@@ -8,7 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,10 +20,9 @@ public abstract class BlockGenerator extends DirectionalBaseBlock implements ITi
 						I18n.format("tooltip.xtech.generation") + ": " + generation + " " + I18n.format("tooltip.xtech.units")), 
 				material, hardness, sound);
 	}
-
+	
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		IBlockState facingState = state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
-		worldIn.setBlockState(pos, facingState, 2);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
 	}
 }

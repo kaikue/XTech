@@ -13,7 +13,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
@@ -54,11 +53,11 @@ public class BlockMirror extends BaseBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		EnumFacing playerFacing = placer.getHorizontalFacing().getOpposite();
 		EnumOrientation mirrorFacing = EnumOrientation.fromHorizontalFacing(playerFacing);
-		IBlockState facingState = state.withProperty(FACING, mirrorFacing);
-		worldIn.setBlockState(pos, facingState, 2);
+		IBlockState facingState = this.getDefaultState().withProperty(FACING, mirrorFacing);
+		return facingState;
 	}
 
 	@Override
