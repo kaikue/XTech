@@ -10,12 +10,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = XTech.MODID, name = XTech.MODNAME, version = XTech.VERSION, dependencies = "required-after:Forge@[12.18.1.2095,)")
+@Mod(modid = XTech.MODID, name = XTech.MODNAME, version = XTech.VERSION, dependencies = "required-after:forge@[14.23.4.2759,)")
 public class XTech {
 
 	public static final String MODID = "xtech";
 	public static final String MODNAME = "XTech";
-	public static final String VERSION = "0.0.1";
+	public static final String VERSION = "0.1.0";
 
 	public static final Logger logger = LogManager.getLogger(XTech.MODID);
 

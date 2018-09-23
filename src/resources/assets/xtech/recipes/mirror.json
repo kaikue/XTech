@@ -1,0 +1,25 @@
+{
+	"result": {
+		"item": "xtech:mirror"
+	},
+	"pattern": [
+		" G",
+		"SG",
+		"IG"
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "blockGlass"
+		},
+		"S": {
+			"type": "forge:ore_dict",
+			"ore": "itemSilicon"
+		},
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		}
+	}
+}

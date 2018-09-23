@@ -1,0 +1,29 @@
+{
+	"result": {
+		"item": "xtech:lasercore"
+	},
+	"pattern": [
+		"III",
+		"RSG",
+		"III"
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"S": {
+			"type": "forge:ore_dict",
+			"ore": "itemSilicon"
+		},
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "blockGlass"
+		}
+	}
+}

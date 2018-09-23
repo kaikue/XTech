@@ -52,8 +52,8 @@ public class NetworkItemInserter extends NetworkInserter {
 			if (itemsToTransfer != null) {
 				for (int j = 0; j < destHandler.getSlots(); j++) {
 					ItemStack remainder = destHandler.insertItem(j, itemsToTransfer, false);
-					int r = remainder == null ? 0 : remainder.stackSize;
-					int q = itemsToTransfer.stackSize - r;
+					int r = remainder == null ? 0 : remainder.getCount();
+					int q = itemsToTransfer.getCount() - r;
 					sourceHandler.extractItem(i, q, false);
 					if(q > 0) return true;
 				}

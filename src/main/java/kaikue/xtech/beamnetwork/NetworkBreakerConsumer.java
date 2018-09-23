@@ -65,11 +65,11 @@ public class NetworkBreakerConsumer extends NetworkConsumer {
 				if(dest != null) {
 					IItemHandler destHandler = dest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invFace);
 					for(EntityItem drop : drops) {
-						ItemStack stack = drop.getEntityItem();
+						ItemStack stack = drop.getItem();
 						for (int j = 0; j < destHandler.getSlots(); j++) {
 							ItemStack remainder = destHandler.insertItem(j, stack, false);
-							drop.setEntityItemStack(remainder);
-							if(remainder == null || remainder.stackSize == 0) {
+							drop.setItem(remainder);
+							if(remainder == null || remainder.getCount() == 0) {
 								drop.setDead();
 								break;
 							}

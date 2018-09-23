@@ -1,0 +1,28 @@
+{
+	"result": {
+		"item": "xtech:iteminserter"
+	},
+	"pattern": [
+		"II ",
+		"RSL",
+		"II "
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"S": {
+			"type": "forge:ore_dict",
+			"ore": "itemSilicon"
+		},
+		"L": {
+			"item": "xtech:lasercore"
+		}
+	}
+}

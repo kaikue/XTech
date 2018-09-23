@@ -11,9 +11,9 @@ import kaikue.xtech.beamnetwork.NetworkItemInserter;
 import kaikue.xtech.tileentities.TileEntityBeamNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeamNetwork> {
 
-	private static final ResourceLocation redLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_red.png");
+	//private static final ResourceLocation redLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_red.png");
 	private static final ResourceLocation greenLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_green.png");
 	private static final ResourceLocation blueLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_blue.png");
 	private static final ResourceLocation orangeLaser = new ResourceLocation(XTech.MODID, "textures/effects/laser_orange.png");
@@ -33,7 +33,7 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeam
 	 * @see https://github.com/McJty/McJtyLib/blob/1.10/src/main/java/mcjty/lib/gui/RenderHelper.java
 	 */
 	@Override
-	public void renderTileEntityAt(TileEntityBeamNetwork tebn, double x, double y, double z, float partialTick, int destroyStage) {
+	public void render(TileEntityBeamNetwork tebn, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
 
 		NetworkInserter ins = tebn.inserter;
 
@@ -55,7 +55,7 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeam
 		if(ins instanceof NetworkItemInserter) this.bindTexture(blueLaser);
 		if(ins instanceof NetworkBreakerInserter) this.bindTexture(yellowLaser);
 
-		EntityPlayerSP p = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP p = Minecraft.getMinecraft().player;
 		double pX = p.lastTickPosX + (p.posX - p.lastTickPosX) * partialTick;
 		double pY = p.lastTickPosY + (p.posY - p.lastTickPosY) * partialTick;
 		double pZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * partialTick;
@@ -102,11 +102,11 @@ public class RenderInserterBeam extends TileEntitySpecialRenderer<TileEntityBeam
 		int b1 = brightness >> 16 & 65535;
 		int b2 = brightness & 65535;
 
-		VertexBuffer buffer = tessellator.getBuffer();
-		buffer.pos(p1.xCoord, p1.yCoord, p1.zCoord).tex(0.0D, 0.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
-		buffer.pos(p2.xCoord, p2.yCoord, p2.zCoord).tex(1.0D, 0.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
-		buffer.pos(p3.xCoord, p3.yCoord, p3.zCoord).tex(1.0D, 1.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
-		buffer.pos(p4.xCoord, p4.yCoord, p4.zCoord).tex(0.0D, 1.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.pos(p1.x, p1.y, p1.z).tex(0.0D, 0.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
+		buffer.pos(p2.x, p2.y, p2.z).tex(1.0D, 0.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
+		buffer.pos(p3.x, p3.y, p3.z).tex(1.0D, 1.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
+		buffer.pos(p4.x, p4.y, p4.z).tex(0.0D, 1.0D).lightmap(b1, b2).color(255, 255, 255, 128).endVertex();
 	}
 
 }

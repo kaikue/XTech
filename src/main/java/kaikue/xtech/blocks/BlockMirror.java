@@ -2,8 +2,6 @@ package kaikue.xtech.blocks;
 
 import java.util.Arrays;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -56,15 +54,17 @@ public class BlockMirror extends BaseBlock {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		EnumFacing playerFacing = placer.getHorizontalFacing().getOpposite();
 		EnumOrientation mirrorFacing = EnumOrientation.fromHorizontalFacing(playerFacing);
-		return this.getDefaultState().withProperty(FACING, mirrorFacing);
+		IBlockState facingState = state.withProperty(FACING, mirrorFacing);
+		worldIn.setBlockState(pos, facingState, 2);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-		if(worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.down())) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        boolean powered = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());
+		if(powered) {
 			rotate(worldIn, pos);
 		}
 	}
@@ -78,7 +78,7 @@ public class BlockMirror extends BaseBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote) {
 			return true;
 		}

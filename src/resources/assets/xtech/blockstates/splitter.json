@@ -4,6 +4,12 @@
         "model": "xtech:splitter"
     },
     "variants": {
+		"inventory": {
+			"model": "cube_all",
+			"textures": {
+				"all": "blocks/dirt"
+			}
+		},
         "facing=up_north":  { "model": "xtech:splitter_up", "y": 270 },
         "facing=up_south":  { "model": "xtech:splitter_up", "y": 90 },
         "facing=up_east":  { "model": "xtech:splitter_up" },

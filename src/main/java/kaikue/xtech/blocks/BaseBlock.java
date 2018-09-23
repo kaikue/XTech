@@ -2,32 +2,36 @@ package kaikue.xtech.blocks;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import kaikue.xtech.ModMisc;
 import kaikue.xtech.XTech;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BaseBlock extends Block {
 
+	public ItemBlock itemBlock;
+	
+	private List<String> description;
+	
 	public BaseBlock(String name, List<String> description, Material material, float hardness, SoundType sound, boolean addToCreativeTab) {
 		super(material);
 		setUnlocalizedName(XTech.MODID + "." + name);
 		setHardness(hardness);
 		setSoundType(sound);
 		setRegistryName(name);
-		GameRegistry.register(this);
-		ItemBlock itemBlock = getItemBlock(description);
-		GameRegistry.register(itemBlock, getRegistryName());
+		this.description = description;
+		itemBlock = createItemBlock();
 		if(addToCreativeTab) {
 			setCreativeTab(ModMisc.creativeTab);
 		}
@@ -45,15 +49,15 @@ public abstract class BaseBlock extends Block {
 		this(name, null, material, hardness, sound, true);
 	}
 
-	private ItemBlock getItemBlock(final List<String> description) {
+	private ItemBlock createItemBlock() {
 		if(description == null) return new ItemBlock(this);
 
 		return new ItemBlock(this) {
 			@SideOnly(Side.CLIENT)
 			@Override
-			public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced) {
+			public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 				for(String line : description) {
-					info.add(line);
+					tooltip.add(line);
 				}
 			}
 		};
@@ -61,6 +65,6 @@ public abstract class BaseBlock extends Block {
 
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }
