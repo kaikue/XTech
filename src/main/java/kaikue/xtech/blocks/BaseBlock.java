@@ -62,8 +62,7 @@ public abstract class BaseBlock extends Block {
 			}
 		};
 	}
-
-	@SideOnly(Side.CLIENT)
+	
 	public void initModel() {
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}

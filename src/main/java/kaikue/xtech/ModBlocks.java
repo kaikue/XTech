@@ -13,8 +13,6 @@ import kaikue.xtech.blocks.BlockMirror;
 import kaikue.xtech.blocks.BlockSiliconCrystal;
 import kaikue.xtech.blocks.BlockSmelterConsumer;
 import kaikue.xtech.blocks.BlockSplitter;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModBlocks {
 
@@ -44,8 +42,7 @@ public class ModBlocks {
 				blockBreakerConsumer = new BlockBreakerConsumer()
 				));
 	}
-
-	@SideOnly(Side.CLIENT)
+	
 	public static void initModels() {
 		for(BaseBlock block : blocks) {
 			block.initModel();

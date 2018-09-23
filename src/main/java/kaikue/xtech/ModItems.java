@@ -6,8 +6,6 @@ import java.util.Arrays;
 import kaikue.xtech.items.BaseItem;
 import kaikue.xtech.items.ItemLaserCore;
 import kaikue.xtech.items.ItemSilicon;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModItems {
 
@@ -24,8 +22,7 @@ public class ModItems {
 				));
 
 	}
-
-	@SideOnly(Side.CLIENT)
+	
 	public static void initModels() {
 		for(BaseItem item : items) {
 			item.initModel();
