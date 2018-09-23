@@ -6,8 +6,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ModRendering {
 	public static void init() {
-		ModBlocks.initModels();
-		ModItems.initModels();
+		//ModBlocks.initModels();
+		//ModItems.initModels();
 	}
 
 	public static void registerTESRs() {
